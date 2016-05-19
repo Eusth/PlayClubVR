@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BE0FD119-262B-42C0-BE1F-8BCE0AF022D8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlayClubVR</RootNamespace>
+    <AssemblyName>PlayClubVR</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Install|AnyCPU'">
+    <OutputPath>bin\Install\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>0</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\Libs\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="IllusionPlugin">
+      <HintPath>..\Libs\Injector\IllusionPlugin.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\VRGIN\Libs\Unity 4.6\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\VRGIN\Libs\Unity 4.6\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controller.cs" />
+    <Compile Include="OSP\OSPAudioVolumeManager.cs" />
+    <Compile Include="PlayClubActor.cs" />
+    <Compile Include="PlayClubContext.cs" />
+    <Compile Include="PlayClubInterpreter.cs" />
+    <Compile Include="PlayClubSeatedMode.cs" />
+    <Compile Include="PlayClubStandingMode.cs" />
+    <Compile Include="PlayClubVR.cs" />
+    <Compile Include="PlayTool.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransientHead.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VRGIN\VRGIN.Core.U46\VRGIN.Core.U46.csproj">
+      <Project>{8fe87229-42a4-4cb0-846a-7a2726569b17}</Project>
+      <Name>VRGIN.Core.U46</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  -->
+  <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Install'">
+    <Message Text="Installing mod..." Importance="normal" />
+    <PropertyGroup>
+      <InstallDir>$(registry:HKEY_CURRENT_USER\Software\illusion\PlayClub@INSTALLDIR)</InstallDir>
+      <PluginDir>$(InstallDir)Plugins\</PluginDir>
+      <DataDir>$(InstallDir)PlayClub_Data\</DataDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <PluginFiles Include="$(OutputPath)*.dll" />
+      <ImageFiles Include="$(OutputPath)Images\*.*" />
+      <OtherFiles Include="$(OutputPath)Libs\**\*" Exclude="$(OutputPath)Libs\Data\**\*" />
+      <DataFiles Include="$(OutputPath)Libs\Data\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(PluginDir)" />
+    <Copy SourceFiles="@(ImageFiles)" DestinationFolder="$(PluginDir)Images" />
+    <Copy SourceFiles="@(OtherFiles)" DestinationFolder="$(InstallDir)%(RecursiveDir)" />
+    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(DataDir)%(RecursiveDir)" />
+  </Target>
+</Project>
