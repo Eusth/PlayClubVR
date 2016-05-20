@@ -65,10 +65,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EyeTarget.cs" />
+    <Compile Include="GripHandler.cs" />
     <Compile Include="PlayClubStudioVR.cs" />
     <Compile Include="ShisenCorrecter.cs" />
     <Compile Include="StudioActor.cs" />
     <Compile Include="StudioInterpreter.cs" />
+    <Compile Include="StudioSeatedMode.cs" />
+    <Compile Include="StudioStandingMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlayClubVR\PlayClubVR.csproj">

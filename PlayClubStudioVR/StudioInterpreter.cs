@@ -30,7 +30,7 @@ namespace PlayClubStudioVR
             base.OnLevel(level);
             InitScene();
         }
-
+        
         protected override void OnUpdate()
         {
             base.OnUpdate();

@@ -55,17 +55,22 @@ namespace PlayClubVR
                         // Switch to standing mode
                         if(VR.Manager.Mode is PlayClubSeatedMode)
                         {
-                            VR.Manager.SetMode<PlayClubStandingMode>();
+                            ChangeMode();
                         }
                     }
                 }
             }
         }
 
+        protected virtual void ChangeMode()
+        {
+            VR.Manager.SetMode<PlayClubStandingMode>();
+        }
+
         protected override IEnumerable<IShortcut> CreateShortcuts()
         {
             return base.CreateShortcuts().Concat(new IShortcut[] {
-                new MultiKeyboardShortcut(new KeyStroke("Ctrl + C"), new KeyStroke("Ctrl + C"), delegate { VR.Manager.SetMode<PlayClubStandingMode>(); } ),
+                new MultiKeyboardShortcut(new KeyStroke("Ctrl + C"), new KeyStroke("Ctrl + C"), ChangeMode ),
             });
         }
 

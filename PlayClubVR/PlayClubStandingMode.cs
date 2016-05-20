@@ -35,8 +35,13 @@ namespace PlayClubVR
         protected override IEnumerable<IShortcut> CreateShortcuts()
         {
             return base.CreateShortcuts().Concat(new IShortcut[] {
-                new MultiKeyboardShortcut(new KeyStroke("Ctrl + C"), new KeyStroke("Ctrl + C"), delegate { VR.Manager.SetMode<PlayClubSeatedMode>(); } ),
+                new MultiKeyboardShortcut(new KeyStroke("Ctrl + C"), new KeyStroke("Ctrl + C"), ChangeMode ),
             });
+        }
+
+        protected virtual void ChangeMode()
+        {
+            VR.Manager.SetMode<PlayClubSeatedMode>();
         }
 
         protected override void CreateControllers()
