@@ -12,7 +12,7 @@ using VRGIN.Core.Helpers;
 
 namespace PlayClubVR
 {
-    class PlayTool : Tool
+    public class PlayTool : Tool
     {
         private const float DOT_PRODUCT_THRESHOLD = 0.7f;
 

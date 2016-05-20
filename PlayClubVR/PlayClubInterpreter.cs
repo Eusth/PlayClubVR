@@ -7,7 +7,7 @@ using VRGIN.Core;
 
 namespace PlayClubVR
 {
-    class PlayClubInterpreter : GameInterpreter
+    public class PlayClubInterpreter : GameInterpreter
     {
         /// <summary>
         /// Gets the current H scene.

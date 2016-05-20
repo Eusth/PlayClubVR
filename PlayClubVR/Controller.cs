@@ -8,7 +8,7 @@ using VRGIN.Core.Controls;
 
 namespace PlayClubVR
 {
-    class PlayClubController : Controller
+    public class PlayClubController : Controller
     {
         public static PlayClubController Create()
         {

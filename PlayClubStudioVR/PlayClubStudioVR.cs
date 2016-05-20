@@ -1,20 +1,20 @@
 ﻿using IllusionPlugin;
+using PlayClubVR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VRGIN.Core;
-using VRGIN.Core.Modes;
 
-namespace PlayClubVR
+namespace PlayClubStudioVR
 {
-    public class PlayClubVR : IEnhancedPlugin
+    public class PlayClubStudioVR : IEnhancedPlugin
     {
         public string[] Filter
         {
             get
             {
-                return new string[] { "PlayClub" };
+                return new string[] { "PlayClubStudio" };
             }
         }
 
@@ -22,7 +22,7 @@ namespace PlayClubVR
         {
             get
             {
-                return "PlayClubVR";
+                return "Play Club Studio VR";
             }
         }
 
@@ -36,16 +36,17 @@ namespace PlayClubVR
 
         public void OnApplicationQuit()
         {
+
         }
 
         public void OnApplicationStart()
         {
             if (Environment.CommandLine.Contains("--vr"))
             {
-                var manager = VRManager.Create<PlayClubInterpreter>(new PlayClubContext());
+                var manager = VRManager.Create<StudioInterpreter>(new PlayClubContext());
                 manager.SetMode<PlayClubSeatedMode>();
             }
-            if(Environment.CommandLine.Contains("--verbose"))
+            if (Environment.CommandLine.Contains("--verbose"))
             {
                 Logger.Level = Logger.LogMode.Debug;
             }

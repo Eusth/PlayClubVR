@@ -9,7 +9,7 @@ using VRGIN.Core;
 
 namespace PlayClubVR
 {
-    class PlayClubActor : DefaultActor<Human>
+    public class PlayClubActor : DefaultActor<Human>
     {
 
         private static FieldInfo _HeartField = typeof(HumanVoice).GetField("heart", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);

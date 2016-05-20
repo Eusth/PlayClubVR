@@ -12,7 +12,7 @@ using VRGIN.Core.Modes;
 
 namespace PlayClubVR
 {
-    class PlayClubSeatedMode : SeatedMode
+    public class PlayClubSeatedMode : SeatedMode
     {
         private static bool _ControllerFound = false;
         private FieldInfo _IllusionCameraRotation = typeof(IllusionCamera).GetField("rotate", BindingFlags.NonPublic | BindingFlags.Instance);

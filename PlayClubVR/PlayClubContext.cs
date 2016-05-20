@@ -8,7 +8,7 @@ using VRGIN.Core.Visuals;
 
 namespace PlayClubVR
 {
-    class PlayClubContext : IVRManagerContext
+    public class PlayClubContext : IVRManagerContext
     {
 
         private DefaultMaterialPalette _Materials;

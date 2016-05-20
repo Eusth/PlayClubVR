@@ -7,7 +7,7 @@ using VRGIN.Core;
 
 namespace PlayClubVR
 {
-    class TransientHead : ProtectedBehaviour
+    public class TransientHead : ProtectedBehaviour
     {
         private List<Renderer> rendererList = new List<Renderer>();
         private bool hidden = false;

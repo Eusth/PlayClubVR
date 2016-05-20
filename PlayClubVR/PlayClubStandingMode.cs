@@ -10,7 +10,7 @@ using VRGIN.Core.Modes;
 
 namespace PlayClubVR
 {
-    class PlayClubStandingMode : StandingMode
+    public class PlayClubStandingMode : StandingMode
     {
 
         protected virtual void OnEnable()
@@ -47,9 +47,11 @@ namespace PlayClubVR
             foreach(var controller in new Controller[] { Left, Right })
             {
                 var boneCollider = controller.gameObject.AddComponent<DynamicBoneCollider_Custom>();
-                boneCollider.m_Radius = 0.000005f; // Does not seem to have an effect
+                boneCollider.m_Radius = 0; // Does not seem to have an effect
                 boneCollider.m_Center.y = -0.03f;
                 boneCollider.m_Center.z = 0.01f;
+                boneCollider.m_Bound = DynamicBoneCollider.Bound.Outside;
+                boneCollider.m_Direction = DynamicBoneCollider.Direction.X;
 
                 foreach(var actor in VR.Interpreter.Actors.OfType<PlayClubActor>())
                 {
@@ -57,7 +59,6 @@ namespace PlayClubVR
                 }
             }
         }
-
         //protected override Controller CreateLeftController()
         //{
         //    return PlayClubController.Create();
