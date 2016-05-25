@@ -44,6 +44,17 @@ namespace PlayClubStudioVR
                 _Actors.Clear();
             }
         }
+        
+        public override IEnumerable<Camera> FindSubCameras()
+        {
+            var subCams = Camera.allCameras.Where(
+                    cam => (cam.cullingMask & VR.Context.UILayerMask) == 0
+                        && cam.clearFlags != CameraClearFlags.Color).ToArray();
+
+            Logger.Info("Found {0} sub cameras", subCams.Length);
+            return subCams;
+        }
+
         /// <summary>
         /// Removes dead entries from actors list and adds new ones.
         /// </summary>
