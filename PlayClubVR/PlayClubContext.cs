@@ -75,7 +75,23 @@ namespace PlayClubVR
         {
             get
             {
-                return LayerMask.GetMask("UI");
+                return LayerMask.GetMask(UILayer);
+            }
+        }
+
+        public string UILayer
+        {
+            get
+            {
+                return "UI";
+            }
+        }
+
+        public bool SimulateCursor
+        {
+            get
+            {
+                return false;
             }
         }
     }
