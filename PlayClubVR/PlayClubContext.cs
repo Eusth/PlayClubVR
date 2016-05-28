@@ -94,5 +94,13 @@ namespace PlayClubVR
                 return false;
             }
         }
+
+        public bool GUIAlternativeSortingMode
+        {
+            get
+            {
+                return true;
+            }
+        }
     }
 }
