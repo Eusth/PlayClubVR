@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller.cs" />
+    <Compile Include="MaestroTool.cs" />
     <Compile Include="OSP\OSPAudioVolumeManager.cs" />
     <Compile Include="PlayClubActor.cs" />
     <Compile Include="PlayClubContext.cs" />
@@ -81,6 +82,11 @@
       <Project>{8fe87229-42a4-4cb0-846a-7a2726569b17}</Project>
       <Name>VRGIN.Core.U46</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\icon_maestro.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
