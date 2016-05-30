@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VRGIN.Core;
-using VRGIN.Core.Modes;
+using VRGIN.Modes;
 
 namespace PlayClubVR
 {

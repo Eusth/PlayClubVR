@@ -6,9 +6,9 @@ using System.Text;
 using UnityEngine;
 using Valve.VR;
 using VRGIN.Core;
-using VRGIN.Core.Controls;
-using VRGIN.Core.Helpers;
-using VRGIN.Core.Modes;
+using VRGIN.Controls;
+using VRGIN.Helpers;
+using VRGIN.Modes;
 
 namespace PlayClubVR
 {

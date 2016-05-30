@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using VRGIN.Core;
-using VRGIN.Core.Visuals;
+using VRGIN.Visuals;
 
 namespace PlayClubVR
 {

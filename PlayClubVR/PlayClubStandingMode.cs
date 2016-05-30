@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using VRGIN.Core;
-using VRGIN.Core.Controls;
-using VRGIN.Core.Helpers;
-using VRGIN.Core.Modes;
+using VRGIN.Controls;
+using VRGIN.Helpers;
+using VRGIN.Modes;
 
 namespace PlayClubVR
 {
@@ -53,7 +53,7 @@ namespace PlayClubVR
             {
                 var boneCollider = new GameObject("Dynamic Collider").AddComponent<DynamicBoneCollider_Custom>();
                 boneCollider.transform.SetParent(controller.transform, false);
-                boneCollider.m_Radius = 0; // Does not seem to have an effect
+                boneCollider.m_Radius = 0.05f; // Does not seem to have an effect
                 boneCollider.m_Center.y = -0.03f;
                 boneCollider.m_Center.z = 0.01f;
                 boneCollider.m_Bound = DynamicBoneCollider.Bound.Outside;

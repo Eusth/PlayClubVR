@@ -8,9 +8,10 @@ using System.Text;
 using UnityEngine;
 using Valve.VR;
 using VRGIN.Core;
-using VRGIN.Core.Controls;
-using VRGIN.Core.Helpers;
-using VRGIN.Core.Native;
+using VRGIN.Controls;
+using VRGIN.Helpers;
+using VRGIN.Native;
+using VRGIN.Controls.Tools;
 
 namespace PlayClubVR
 {
@@ -39,8 +40,7 @@ namespace PlayClubVR
             _Dummy = new GameObject().transform;
             _Dummy.SetParent(transform, false);
         }
-
-
+        
         void OnTriggerEnter(Collider other)
         {
             if (IsMaestroHandle(other.gameObject)) {
@@ -105,17 +105,8 @@ namespace PlayClubVR
 
                 if(device.GetPressDown(EVRButtonId.k_EButton_Grip))
                 {
-                    //PostMessage(WindowManager.Handle, WM_KEYDOWN, VK_F9, 0);
-                    //SendMessage(WindowManager.Handle, WM_KEYDOWN, VK_F9, 0);
-                    //PostMessage(WindowManager.Handle, WM_KEYUP, VK_F9, 0);
-
                     SendKey.Send(Keys.F9, false);
                 }
-                if (device.GetPressUp(EVRButtonId.k_EButton_Grip))
-                {
-
-                }
-
             }
         }
 
@@ -152,86 +143,86 @@ namespace PlayClubVR
             /// <summary></summary>
             F9 = 0x78
         }
-class SendKey
-    {
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct MOUSEINPUT
+        class SendKey
         {
-            public int dx;
-            public int dy;
-            public int mouseData;
-            public int dwFlags;
-            public int time;
-            public int dwExtraInfo;
-        };
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct KEYBDINPUT
-        {
-            public short wVk;
-            public short wScan;
-            public int dwFlags;
-            public int time;
-            public int dwExtraInfo;
-        };
+            [StructLayout(LayoutKind.Sequential)]
+            private struct MOUSEINPUT
+            {
+                public int dx;
+                public int dy;
+                public int mouseData;
+                public int dwFlags;
+                public int time;
+                public int dwExtraInfo;
+            };
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct HARDWAREINPUT
-        {
-            public int uMsg;
-            public short wParamL;
-            public short wParamH;
-        };
+            [StructLayout(LayoutKind.Sequential)]
+            private struct KEYBDINPUT
+            {
+                public short wVk;
+                public short wScan;
+                public int dwFlags;
+                public int time;
+                public int dwExtraInfo;
+            };
 
-        [StructLayout(LayoutKind.Explicit)]
-        private struct INPUT
-        {
-            [FieldOffset(0)]
-            public int type;
-            [FieldOffset(4)]
-            public MOUSEINPUT no;
-            [FieldOffset(4)]
-            public KEYBDINPUT ki;
-            [FieldOffset(4)]
-            public HARDWAREINPUT hi;
-        };
+            [StructLayout(LayoutKind.Sequential)]
+            private struct HARDWAREINPUT
+            {
+                public int uMsg;
+                public short wParamL;
+                public short wParamH;
+            };
 
-        [DllImport("user32.dll")]
-        private extern static void SendInput(int nInputs, ref INPUT pInputs, int cbsize);
-        [DllImport("user32.dll", EntryPoint = "MapVirtualKeyA")]
-        private extern static int MapVirtualKey(int wCode, int wMapType);
+            [StructLayout(LayoutKind.Explicit)]
+            private struct INPUT
+            {
+                [FieldOffset(0)]
+                public int type;
+                [FieldOffset(4)]
+                public MOUSEINPUT no;
+                [FieldOffset(4)]
+                public KEYBDINPUT ki;
+                [FieldOffset(4)]
+                public HARDWAREINPUT hi;
+            };
 
-        private const int INPUT_KEYBOARD = 1;
-        private const int KEYEVENTF_KEYDOWN = 0x0;
-        private const int KEYEVENTF_KEYUP = 0x2;
-        private const int KEYEVENTF_EXTENDEDKEY = 0x1;
+            [DllImport("user32.dll")]
+            private extern static void SendInput(int nInputs, ref INPUT pInputs, int cbsize);
+            [DllImport("user32.dll", EntryPoint = "MapVirtualKeyA")]
+            private extern static int MapVirtualKey(int wCode, int wMapType);
 
-        public static void Send(Keys key, bool isEXTEND)
-        {
-            /*
-             * Keyを送る
-             * 入力
-             *     isEXTEND : 拡張キーかどうか
-             */
+            private const int INPUT_KEYBOARD = 1;
+            private const int KEYEVENTF_KEYDOWN = 0x0;
+            private const int KEYEVENTF_KEYUP = 0x2;
+            private const int KEYEVENTF_EXTENDEDKEY = 0x1;
 
-            INPUT inp = new INPUT();
+            public static void Send(Keys key, bool isEXTEND)
+            {
+                /*
+                 * Keyを送る
+                 * 入力
+                 *     isEXTEND : 拡張キーかどうか
+                 */
 
-            // 押す
-            inp.type = INPUT_KEYBOARD;
-            inp.ki.wVk = (short)key;
-            inp.ki.wScan = (short)MapVirtualKey(inp.ki.wVk, 0);
-            inp.ki.dwFlags = ((isEXTEND) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYDOWN;
-            inp.ki.time = 0;
-            inp.ki.dwExtraInfo = 0;
-            SendInput(1, ref inp, Marshal.SizeOf(inp));
+                INPUT inp = new INPUT();
 
-            System.Threading.Thread.Sleep(100);
+                // 押す
+                inp.type = INPUT_KEYBOARD;
+                inp.ki.wVk = (short)key;
+                inp.ki.wScan = (short)MapVirtualKey(inp.ki.wVk, 0);
+                inp.ki.dwFlags = ((isEXTEND) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYDOWN;
+                inp.ki.time = 0;
+                inp.ki.dwExtraInfo = 0;
+                SendInput(1, ref inp, Marshal.SizeOf(inp));
 
-            // 離す
-            inp.ki.dwFlags = ((isEXTEND) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYUP;
-            SendInput(1, ref inp, Marshal.SizeOf(inp));
+                System.Threading.Thread.Sleep(100);
+
+                // 離す
+                inp.ki.dwFlags = ((isEXTEND) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYUP;
+                SendInput(1, ref inp, Marshal.SizeOf(inp));
+            }
         }
     }
-}
 }

@@ -78,9 +78,9 @@
       <Project>{be0fd119-262b-42c0-be1f-8bce0af022d8}</Project>
       <Name>PlayClubVR</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VRGIN\VRGIN.Core.U46\VRGIN.Core.U46.csproj">
+    <ProjectReference Include="..\VRGIN\VRGIN\VRGIN.U46.csproj">
       <Project>{8fe87229-42a4-4cb0-846a-7a2726569b17}</Project>
-      <Name>VRGIN.Core.U46</Name>
+      <Name>VRGIN.U46</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

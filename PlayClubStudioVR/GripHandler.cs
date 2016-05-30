@@ -6,8 +6,8 @@ using System.Text;
 using UnityEngine;
 using Valve.VR;
 using VRGIN.Core;
-using VRGIN.Core.Controls;
-using VRGIN.Core.Helpers;
+using VRGIN.Controls;
+using VRGIN.Helpers;
 
 namespace PlayClubStudioVR
 {

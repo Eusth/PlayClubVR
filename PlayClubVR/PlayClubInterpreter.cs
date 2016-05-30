@@ -106,5 +106,10 @@ namespace PlayClubVR
                 //}
             }
         }
+
+        public override bool IsBody(Collider collider)
+        {
+            return collider.gameObject.layer == LayerMask.NameToLayer("ToLiquidCollision");
+        }
     }
 }

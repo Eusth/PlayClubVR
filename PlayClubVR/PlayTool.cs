@@ -7,8 +7,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Valve.VR;
 using VRGIN.Core;
-using VRGIN.Core.Controls;
-using VRGIN.Core.Helpers;
+using VRGIN.Controls;
+using VRGIN.Helpers;
+using VRGIN.Controls.Tools;
 
 namespace PlayClubVR
 {
