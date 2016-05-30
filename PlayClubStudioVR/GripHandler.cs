@@ -13,6 +13,7 @@ namespace PlayClubStudioVR
 {
     class GripHandler : ProtectedBehaviour
     {
+        private static string[] BLACKLIST = new string[] { "XY", "YZ", "XZ", "RingGuidZ", "RingGuidX", "RingGuidY" };
         private readonly static int GIZMO_LAYER = LayerMask.NameToLayer("DriveUI");
         private Controller _Controller;
         private bool _Dragging = false;
@@ -91,58 +92,71 @@ namespace PlayClubStudioVR
 
         public void OnTriggerEnter(Collider other)
         {
-            if(other.gameObject.layer == GIZMO_LAYER && HasFocus())
+            try
             {
-                if (!_Dragging)
+
+                if (other.gameObject.layer == GIZMO_LAYER && !BLACKLIST.Contains(other.name) && HasFocus())
                 {
-                    if (_Rumble != null)
+                    VRLog.Debug("Enter {0}", other.name);
+                    if (!_Dragging)
                     {
-                        _Rumble.Close();
-                    }
-                    _Rumble = new RumbleSession(500, 100);
-                    _Controller.StartRumble(_Rumble);
-                    _Manager = (_GuideDriveManager.GetValue(other.GetComponent<GuideDrive>()) as GuideDriveManager);
-                    _HoverObject = other.gameObject;
-                    _Hover = true;
-                } else
-                {
-                    if(other.gameObject == _HoverObject)
-                    {
+                        if (_Rumble != null)
+                        {
+                            _Rumble.Close();
+                        }
+                        _Rumble = new RumbleSession(500, 100);
+                        _Controller.StartRumble(_Rumble);
+                        _Manager = (_GuideDriveManager.GetValue(other.GetComponent<GuideDrive>()) as GuideDriveManager);
+                        _HoverObject = other.gameObject;
                         _Hover = true;
+
                     }
                 }
-                
+                if (other.gameObject == _HoverObject)
+                {
+                    _Hover = true;
+                }
+            } catch(Exception e)
+            {
+                Logger.Error(e);
             }
         }
 
         public void OnTriggerExit(Collider other)
         {
-            if (other.gameObject.layer == GIZMO_LAYER && HasFocus())
+            try
             {
-                if (!_Dragging)
+
+                if (other.gameObject.layer == GIZMO_LAYER && HasFocus())
                 {
-                    Release();
-                } else
-                {
-                    if (other.gameObject == _HoverObject)
+                 VRLog.Debug("Exit {0}", other.name);
+                    if (!_Dragging)
                     {
-                        _Hover = false;
+                        Release();
                     }
                 }
+                if (other.gameObject == _HoverObject)
+                {
+                    _Hover = false;
+                }
+            } catch(Exception e)
+            {
+                Logger.Error(e);
+
             }
         }
-
         private void Release()
         {
             if (_Rumble != null)
             {
                 _Rumble.Close();
-                _Rumble = null;
             }
             if (HasFocus(false))
             {
                 _Lock.Release();
             }
+
+            _HoverObject = null;
         }
     }
 }
