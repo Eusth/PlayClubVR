@@ -37,6 +37,20 @@ namespace PlayClubVR
             }
         }
 
+
+        public override IEnumerable<Type> Tools
+        {
+            get
+            {
+                var tools = base.Tools;
+                if (MaestroTool.IsAvailable)
+                {
+                    tools = tools.Concat(new Type[] { typeof(MaestroTool) });
+                }
+                return tools;
+            }
+        }
+
         private void OnDeviceConnected(object[] args)
         {
             if (!_ControllerFound)

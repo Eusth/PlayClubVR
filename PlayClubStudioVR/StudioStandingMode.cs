@@ -17,7 +17,6 @@ namespace PlayClubStudioVR
         protected override void CreateControllers()
         {
             base.CreateControllers();
-
             Left.gameObject.AddComponent<GripHandler>();
             Right.gameObject.AddComponent<GripHandler>();
         }
@@ -27,7 +26,7 @@ namespace PlayClubStudioVR
             get
             {
                 // Remove PlayTool because it ain't needed
-                return base.Tools.Except((new Type[] { typeof(PlayTool) }));
+                return base.Tools.Except((new Type[] { typeof(PlayTool), typeof(MaestroTool) }));
             }
         }
     }

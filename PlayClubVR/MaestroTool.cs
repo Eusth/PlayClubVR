@@ -22,13 +22,44 @@ namespace PlayClubVR
         Transform _Dummy = null;
         private bool _Dragging;
         private bool _Focused;
+        private int _FocusCount;
 
+        private static bool? _Available;
 
         public override Texture2D Image
         {
             get
             {
                 return UnityHelper.LoadImage("icon_maestro.png");
+            }
+        }
+
+        /// <summary>
+        /// Gets whether or not the MaestroMode DLL is loaded.
+        /// </summary>
+        public static bool IsAvailable
+        {
+            get
+            {
+                if (!_Available.HasValue)
+                {
+                    foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                    {
+                        try {
+                            if(assembly.GetTypes().Any(type => type.FullName == "MaestroMode.MaestroPlugin"))
+                            {
+                                _Available = true;
+                                break;
+                            }
+                        } catch(Exception)
+                        {}
+                    }
+                    if(!_Available.HasValue)
+                    {
+                        _Available = false;
+                    }
+                }
+                return _Available.Value;
             }
         }
 
@@ -44,10 +75,11 @@ namespace PlayClubVR
         void OnTriggerEnter(Collider other)
         {
             if (IsMaestroHandle(other.gameObject)) {
-                if(!_Dragging)
+                _FocusCount++;
+
+                if (!_Dragging)
                 {
                     _Handle = other.transform;
-                    _Focused = true;
                 } else if(!_Focused && other.transform == _Handle)
                 {
                     _Focused = true;
@@ -59,11 +91,19 @@ namespace PlayClubVR
         {
             if (IsMaestroHandle(other.gameObject))
             {
-                if(_Dragging && _Focused && other.transform == _Handle)
+                _FocusCount--;
+
+                if (_Dragging && _Focused && other.transform == _Handle)
                 {
                     _Focused = false;
                 }
             }
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            _FocusCount = 0;
         }
 
         protected override void OnFixedUpdate()
@@ -74,31 +114,42 @@ namespace PlayClubVR
             {
                 var device = SteamVR_Controller.Input((int)_Controller.Tracking.index);
           
-                if (_Focused && device.GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
+                if (device.GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
                 {
-                    _Handle.gameObject.SendMessage("Select");
-                    _Handle.gameObject.SendMessage("Activate", 1);
-                    var maestroHandle = GetMaestroHandle(_Handle.gameObject);
+                    if(_FocusCount == 0)
+                    {
+                        VRLog.Info("Search for handle");
+                        _Handle = FindNextHandle();
+                    }
+                    if (_Handle)
+                    {
+                        _Handle.gameObject.SendMessage("Select");
+                        _Handle.gameObject.SendMessage("Activate", 1);
+                        var maestroHandle = GetMaestroHandle(_Handle.gameObject);
 
-                    var changedField = maestroHandle.GetType().BaseType.GetField("_changed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    changedField.SetValue(maestroHandle, true);
-                     
-                    _Dummy.position = _Handle.position;
-                    _Dummy.rotation = _Handle.rotation;
-                    _Dragging = true;
+                        var changedField = maestroHandle.GetType().BaseType.GetField("_changed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        changedField.SetValue(maestroHandle, true);
+
+                        _Dummy.position = _Handle.position;
+                        _Dummy.rotation = _Handle.rotation;
+                        _Dragging = true;
+                    }
                 }
-                if (device.GetPress(EVRButtonId.k_EButton_SteamVR_Trigger))
+                if (_Handle && _Dragging)
                 {
-                    _Handle.position = _Dummy.position;
-                    _Handle.rotation = _Dummy.rotation;
-                }
-                if (device.GetPressUp(EVRButtonId.k_EButton_SteamVR_Trigger))
-                {
-                    _Handle.gameObject.SendMessage("Deselect");
-                    _Dragging = false;
+                    if (device.GetPress(EVRButtonId.k_EButton_SteamVR_Trigger))
+                    {
+                        _Handle.position = _Dummy.position;
+                        _Handle.rotation = _Dummy.rotation;
+                    }
+                    if (device.GetPressUp(EVRButtonId.k_EButton_SteamVR_Trigger))
+                    {
+                        _Handle.gameObject.SendMessage("Deselect");
+                        _Dragging = false;
+                    }
                 }
 
-                if(device.GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad))
+                if(_Handle && device.GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad))
                 {
                     _Handle.gameObject.SendMessage("Reset");
                 }
@@ -110,6 +161,22 @@ namespace PlayClubVR
             }
         }
 
+        private Transform FindNextHandle()
+        {
+            // Evil method -- should be replaced with direct communication with Maestro Mode in a future release
+            Transform handle = GameObject.FindObjectsOfType<Transform>().Select(t => t.gameObject).Where(IsMaestroHandle)
+                               .Select(go => go.transform).OrderBy(t => Vector3.Distance(_Controller.transform.position, t.position)).FirstOrDefault();
+            
+            if(handle && Vector3.Distance(_Controller.transform.position, handle.position) < 0.5f)
+            {
+                VRLog.Info("FOUND HANDLE");
+                return handle;
+            } else
+            {
+                return null;
+            }
+
+        }
 
         bool IsMaestroHandle(GameObject go)
         {

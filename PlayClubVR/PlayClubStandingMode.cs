@@ -28,7 +28,11 @@ namespace PlayClubVR
         {
             get
             {
-                return base.Tools.Concat(new Type[] { typeof(PlayTool), typeof(MaestroTool) });
+                var tools = base.Tools.Concat(new Type[] { typeof(PlayTool) });
+                if (MaestroTool.IsAvailable) {
+                    tools = tools.Concat(new Type[] { typeof(MaestroTool) });
+                }
+                return tools;
             }
         }
 

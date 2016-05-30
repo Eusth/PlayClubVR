@@ -13,5 +13,14 @@ namespace PlayClubStudioVR
         {
             VR.Manager.SetMode<StudioStandingMode>();
         }
+
+        public override IEnumerable<Type> Tools
+        {
+            get
+            {
+                // Remove tools that ain't needed
+                return base.Tools.Except((new Type[] { typeof(PlayTool), typeof(MaestroTool) }));
+            }
+        }
     }
 }
