@@ -161,6 +161,11 @@ namespace PlayClubVR
             }
         }
 
+        public override List<HelpText> GetHelpTexts()
+        {
+            return base.GetHelpTexts();
+        }
+
         private Transform FindNextHandle()
         {
             // Evil method -- should be replaced with direct communication with Maestro Mode in a future release
