@@ -44,10 +44,6 @@
       <HintPath>..\Libs\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="IllusionInjector">
-      <HintPath>..\Libs\Injector\IllusionInjector.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="IllusionPlugin">
       <HintPath>..\Libs\Injector\IllusionPlugin.dll</HintPath>
       <Private>False</Private>
