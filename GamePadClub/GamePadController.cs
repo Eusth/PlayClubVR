@@ -48,7 +48,7 @@ namespace GamePadClub
         {
             GamePadState state = GamePad.GetState(PlayerIndex.One);
 
-            if (_PrevState != null)
+            if (_PrevState != null && state.IsConnected)
             {
                 foreach (var consumer in _Consumers)
                 {
