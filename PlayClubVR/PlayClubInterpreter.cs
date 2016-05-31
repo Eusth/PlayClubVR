@@ -33,8 +33,9 @@ namespace PlayClubVR
                 GameControl ctrl = GameObject.FindObjectOfType<GameControl>();
                 ctrl.MapDataCtrl.ChangeMap(ctrl.MapDataCtrl.Datas.ElementAt(1).Value, ctrl, VRCamera.Instance.camera, false, false);
             }
+            
         }
-
+       
         protected override void OnLevel(int level)
         {
             base.OnLevel(level);
@@ -111,5 +112,6 @@ namespace PlayClubVR
         {
             return collider.gameObject.layer == LayerMask.NameToLayer("ToLiquidCollision");
         }
+        
     }
 }

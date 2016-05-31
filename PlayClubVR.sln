@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRGIN.U46", "VRGIN\VRGIN\VR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayClubStudioVR", "PlayClubStudioVR\PlayClubStudioVR.csproj", "{9F6E1BC0-2C48-433E-A8C7-5C21DB635C99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamePadClub", "GamePadClub\GamePadClub.csproj", "{8CF2E8AE-B1CA-4B00-B997-74622BDAF627}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,12 @@ Global
 		{9F6E1BC0-2C48-433E-A8C7-5C21DB635C99}.Install|Any CPU.Build.0 = Install|Any CPU
 		{9F6E1BC0-2C48-433E-A8C7-5C21DB635C99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F6E1BC0-2C48-433E-A8C7-5C21DB635C99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CF2E8AE-B1CA-4B00-B997-74622BDAF627}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CF2E8AE-B1CA-4B00-B997-74622BDAF627}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CF2E8AE-B1CA-4B00-B997-74622BDAF627}.Install|Any CPU.ActiveCfg = Release|Any CPU
+		{8CF2E8AE-B1CA-4B00-B997-74622BDAF627}.Install|Any CPU.Build.0 = Release|Any CPU
+		{8CF2E8AE-B1CA-4B00-B997-74622BDAF627}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CF2E8AE-B1CA-4B00-B997-74622BDAF627}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

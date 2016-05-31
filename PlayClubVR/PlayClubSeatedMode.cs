@@ -9,6 +9,8 @@ using VRGIN.Core;
 using VRGIN.Controls;
 using VRGIN.Helpers;
 using VRGIN.Modes;
+using GamePadClub;
+using XInputDotNetPure;
 
 namespace PlayClubVR
 {
@@ -21,13 +23,63 @@ namespace PlayClubVR
         {
             Logger.Info("Enter seated mode");
             SteamVR_Utils.Event.Listen("device_connected", OnDeviceConnected);
+            GamePadController.Instance.Register(HandleInput);
+
         }
         protected void OnDisable()
         {
             Logger.Info("Leave seated mode");
             SteamVR_Utils.Event.Remove("device_connected", OnDeviceConnected);
+            GamePadController.Instance.Unregister(HandleInput);
 
         }
+
+        bool HandleInput(GamePadState nowState, GamePadState prevState)
+        {
+            if (GamePadHelper.IsPressUp(nowState.Buttons.Start, prevState.Buttons.Start))
+            {
+                Recenter();
+            }
+            
+            if (nowState.Buttons.LeftShoulder == ButtonState.Pressed)
+            {
+                Vector2 rightStick = new Vector2(nowState.ThumbSticks.Right.X, nowState.ThumbSticks.Right.Y);
+                Vector2 leftStick = new Vector2(nowState.ThumbSticks.Left.X, nowState.ThumbSticks.Left.Y);
+                if(rightStick.magnitude > 0.1f)
+                {
+                    VR.Settings.Rotation += rightStick.x * Time.deltaTime * 50f;
+                    VR.Settings.OffsetY += rightStick.y * Time.deltaTime * 0.1f;
+
+                }
+                if (leftStick.magnitude > 0.1f)
+                {
+                    VR.Settings.Distance += leftStick.x * Time.deltaTime * 0.1f;
+                    VR.Settings.Angle += leftStick.y * Time.deltaTime * 50f;
+                }
+
+                if(nowState.DPad.Up == ButtonState.Pressed)
+                {
+                    VR.Settings.IPDScale += Time.deltaTime * 0.1f;
+                } else if(nowState.DPad.Down == ButtonState.Pressed)
+                {
+                    VR.Settings.IPDScale -= Time.deltaTime * 0.1f;
+                }
+
+                // Impersonate
+                if (GamePadHelper.IsPressUp(nowState.Buttons.Y, prevState.Buttons.Y))
+                {
+                    if (LockTarget == null || !LockTarget.IsValid) {
+                        Impersonate(VR.Interpreter.Actors.FirstOrDefault());
+                    } else {
+                        Impersonate(null);
+                    }
+                }
+
+            }
+            
+            return false;
+        }
+
 
         public override ETrackingUniverseOrigin TrackingOrigin
         {
