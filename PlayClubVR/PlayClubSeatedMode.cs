@@ -143,6 +143,7 @@ namespace PlayClubVR
         protected override void OnStart()
         {
             base.OnStart();
+            _IllusionCamera = FindObjectOfType<IllusionCamera>();
 
         }
 
