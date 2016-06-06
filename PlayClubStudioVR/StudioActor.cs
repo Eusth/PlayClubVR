@@ -19,7 +19,8 @@ namespace PlayClubStudioVR
 
             if(actor.sex == Human.SEX.FEMALE)
             {
-                actor.gameObject.AddComponent<ShisenCorrecter>();
+                var correcter = actor.gameObject.AddComponent<ShisenCorrecter>();
+                correcter.Actor = this;
                 Logger.Info("Attached Shisen Correcter to {0}", actor.CharaType);
             }
         }

@@ -1,15 +1,19 @@
-﻿using System;
+﻿using PlayClubVR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
+using VRGIN.Core;
 
 namespace PlayClubStudioVR
 {
     class ShisenCorrecter : MonoBehaviour {
 
         private Human _Human;
+        public PlayClubActor Actor;
+
         void Start()
         {
             _Human = GetComponent<Human>();
@@ -27,7 +31,7 @@ namespace PlayClubStudioVR
             if (targetCtrl == null)
             {
                 targetCtrl = _Human.bodyRoot.gameObject.AddComponent<EyeTargetController>();
-                targetCtrl.rootNode = eyeLookCtrl.transform;
+                targetCtrl.rootNode = Actor.Eyes;
             }
 
             // Replace camera targets if required
