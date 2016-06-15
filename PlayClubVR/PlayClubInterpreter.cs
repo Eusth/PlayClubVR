@@ -39,7 +39,7 @@ namespace PlayClubVR
         protected override void OnLevel(int level)
         {
             base.OnLevel(level);
-
+           
             LookForScene();
 
             if(IsUIOnlyScene)
@@ -47,6 +47,19 @@ namespace PlayClubVR
                 GameControl ctrl = GameObject.FindObjectOfType<GameControl>();
                 ctrl.MapDataCtrl.ChangeMap(ctrl.MapDataCtrl.Datas.ElementAt(1).Value, ctrl, VRCamera.Instance.camera, false, false);
             }
+
+            //var oldShadowCaster = VR.Camera.SteamCam.head.FindChild("ShadowCaster");
+            //if (oldShadowCaster)
+            //{
+            //    DestroyImmediate(oldShadowCaster);
+            //}
+            //var shadowCaster = GameObject.Find("ShadowCaster");
+            //if(shadowCaster)
+            //{
+            //    VRLog.Info("FOund shadow caster");
+            //    //shadowCaster.transform.SetParent(VR.Camera.SteamCam.head);
+            //    shadowCaster.transform.GetChild(0).gameObject.AddComponent<SteamVR_CameraFlip>();
+            //}
         }
 
         private bool IsUIOnlyScene
@@ -110,7 +123,8 @@ namespace PlayClubVR
 
         public override bool IsBody(Collider collider)
         {
-            return collider.gameObject.layer == LayerMask.NameToLayer("ToLiquidCollision");
+            return collider.gameObject.layer == LayerMask.NameToLayer("ToLiquidCollision") 
+                && collider.transform.parent.name.StartsWith("cf_") || collider.transform.parent.name.StartsWith("cm_");
         }
         
     }

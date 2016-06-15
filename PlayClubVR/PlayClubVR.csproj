@@ -68,12 +68,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller.cs" />
+    <Compile Include="ImpersonationHandler.cs" />
     <Compile Include="MaestroTool.cs" />
     <Compile Include="OSP\OSPAudioVolumeManager.cs" />
     <Compile Include="PlayClubActor.cs" />
     <Compile Include="PlayClubContext.cs" />
     <Compile Include="PlayClubInterpreter.cs" />
     <Compile Include="PlayClubSeatedMode.cs" />
+    <Compile Include="PlayClubSettings.cs" />
     <Compile Include="PlayClubStandingMode.cs" />
     <Compile Include="PlayClubVR.cs" />
     <Compile Include="PlayTool.cs" />

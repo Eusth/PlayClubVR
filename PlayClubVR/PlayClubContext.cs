@@ -18,7 +18,7 @@ namespace PlayClubVR
         public PlayClubContext()
         {
             _Materials = new DefaultMaterialPalette();
-            _Settings = VRSettings.Load<VRSettings>("vr_settings.xml");
+            _Settings = VRSettings.Load<PlayClubSettings>("vr_settings.xml");
 
             _Materials.StandardShader = Shader.Find("Marmoset/Specular IBL");
         }
