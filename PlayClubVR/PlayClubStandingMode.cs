@@ -12,6 +12,7 @@ namespace PlayClubVR
 {
     public class PlayClubStandingMode : StandingMode
     {
+        private IllusionCamera _IllusionCamera;
 
         protected virtual void OnEnable()
         {
@@ -22,6 +23,21 @@ namespace PlayClubVR
         protected virtual void OnDisable()
         {
             Logger.Info("Leave standing mode");
+        }
+
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+            _IllusionCamera = FindObjectOfType<IllusionCamera>();
+            gameObject.AddComponent<ImpersonationHandler>();
+        }
+
+        protected override void OnLevel(int level)
+        {
+            base.OnLevel(level);
+            _IllusionCamera = FindObjectOfType<IllusionCamera>();
+
         }
 
         public override IEnumerable<Type> Tools
@@ -66,6 +82,20 @@ namespace PlayClubVR
                 {
                     actor.RegisterDynamicBoneCollider(boneCollider);
                 }
+            }
+        }
+
+        protected override void SyncCameras()
+        {
+            base.SyncCameras();
+            if (_IllusionCamera)
+            {
+                var my = VR.Camera.SteamCam.head;
+
+                _IllusionCamera.Set(
+                    my.position + my.forward,
+                    Quaternion.LookRotation(my.forward, my.up).eulerAngles,
+                1);
             }
         }
         //protected override Controller CreateLeftController()
