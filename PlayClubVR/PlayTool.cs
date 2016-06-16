@@ -90,12 +90,12 @@ namespace PlayClubVR
                     _AlteringSpeed = false;
                 }
 
-                if (device.GetTouchUp(EVRButtonId.k_EButton_Grip))
-                {
-                    ToggleOrgasmLock();
-                }
+                //if (device.GetTouchUp(EVRButtonId.k_EButton_Grip))
+                //{
+                //    ToggleOrgasmLock();
+                //}
 
-                if (device.GetPressUp(EVRButtonId.k_EButton_SteamVR_Trigger))
+                if (device.GetPressUp(EVRButtonId.k_EButton_Grip))
                 {
                     if (_IgnoreNextTrigger)
                     {
@@ -179,8 +179,8 @@ namespace PlayClubVR
                 HelpText.Create("Grind", FindAttachPosition("trackpad"), new Vector3(0, 0.02f, -0.05f), new Vector3(0, 0.0f, -0.015f)),
                 HelpText.Create("Next animation", FindAttachPosition("trackpad"), new Vector3(0.05f, 0.02f, 0), new Vector3(+0.015f, 0.0f, 0)),
                 HelpText.Create("Prev animation", FindAttachPosition("trackpad"), new Vector3(-0.05f, 0.02f, 0), new Vector3(-0.015f, 0.0f, 0)),
-                HelpText.Create("Toggle lock", FindAttachPosition("lgrip"), new Vector3(-0.05f, 0.02f, 0)),
-                HelpText.Create("Ejaculate", FindAttachPosition("trigger"), new Vector3(0.05f, 0.02f, -0.05f)),
+                //HelpText.Create("Toggle lock", FindAttachPosition("lgrip"), new Vector3(-0.05f, 0.02f, 0)),
+                HelpText.Create("Ejaculate", FindAttachPosition("lgrip"), new Vector3(0.05f, 0.02f, -0.05f)),
             });
         }
 
