@@ -16,6 +16,9 @@ namespace PlayClubVR
         PlayClubActor _Actor;
         Controller.Lock _Lock1 = Controller.Lock.Invalid;
         Controller.Lock _Lock2 = Controller.Lock.Invalid;
+        Transform _GoalLeft;
+        Transform _GoalRight;
+
 
         private Dictionary<HumanBodyBones, string> IK_MAPPING = new Dictionary<HumanBodyBones, string>()
         {
@@ -43,6 +46,24 @@ namespace PlayClubVR
                 DestroyImmediate(this);
             }
         }
+
+        protected override void OnAwake()
+        {
+            base.OnAwake();
+
+            _GoalLeft = new GameObject().transform;
+            _GoalRight = new GameObject().transform;
+
+            DontDestroyOnLoad(_GoalLeft);
+            DontDestroyOnLoad(_GoalRight);
+        }
+
+        protected virtual void OnDestroy()
+        {
+            Destroy(_GoalLeft.gameObject);
+            Destroy(_GoalRight.gameObject);
+        }
+
         protected override void OnUpdate()
         {
             base.OnUpdate();
@@ -110,12 +131,19 @@ namespace PlayClubVR
                 LeftIK.solver.IKRotation = VR.Mode.Left.transform.rotation * Quaternion.Euler(0, 60, 0);
                 RightIK.solver.IKPosition = VR.Mode.Right.transform.position - VR.Mode.Right.transform.forward * 0.1f;
                 RightIK.solver.IKRotation = VR.Mode.Right.transform.rotation * Quaternion.Euler(0, -60, 0);
-                RightIK.solver.bendModifier = IKSolverLimb.BendModifier.Target;
-                RightIK.solver.bendModifierWeight = 0.5f;
-                LeftIK.solver.bendModifier = IKSolverLimb.BendModifier.Target;
-                LeftIK.solver.bendModifierWeight = 0.5f;
-                RightIK.solver.bendGoal = null;
-                    
+                RightIK.solver.bendGoal = _GoalRight;
+                RightIK.solver.bendModifier = IKSolverLimb.BendModifier.Goal;
+                RightIK.solver.bendModifierWeight = 1f;
+                LeftIK.solver.bendModifier = IKSolverLimb.BendModifier.Goal;
+                LeftIK.solver.bendGoal = _GoalLeft;
+                LeftIK.solver.bendModifierWeight = 1f;
+
+                _GoalLeft.position = VR.Mode.Left.transform.position - VR.Mode.Left.transform.forward;
+                _GoalRight.position = VR.Mode.Right.transform.position - VR.Mode.Right.transform.forward;
+
+                _GoalLeft.rotation = VR.Mode.Left.transform.rotation;
+                _GoalRight.rotation = VR.Mode.Right.transform.rotation;
+
             }
         }
 
