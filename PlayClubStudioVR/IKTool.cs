@@ -113,6 +113,13 @@ namespace PlayClubStudioVR
             }
         }
 
+        public override List<HelpText> GetHelpTexts()
+        {
+            return new List<HelpText>(new HelpText[] {
+                HelpText.Create("Switch FK/IK", FindAttachPosition("trackpad"), new Vector3(0.07f, 0.02f, 0.05f)),
+                HelpText.Create("Grab", FindAttachPosition("trigger"), new Vector3(0.06f, 0.04f, -0.05f)),
+            });
+        }
 
         protected override void OnStart()
         {
