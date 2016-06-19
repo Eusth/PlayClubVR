@@ -65,7 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EyeTarget.cs" />
-    <Compile Include="GripHandler.cs" />
+    <Compile Include="IKTool.cs" />
     <Compile Include="PlayClubStudioVR.cs" />
     <Compile Include="ShisenCorrecter.cs" />
     <Compile Include="StudioActor.cs" />

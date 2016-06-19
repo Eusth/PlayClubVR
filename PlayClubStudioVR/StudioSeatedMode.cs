@@ -18,8 +18,11 @@ namespace PlayClubStudioVR
         {
             get
             {
-                // Remove tools that ain't needed
-                return base.Tools.Except((new Type[] { typeof(PlayTool), typeof(MaestroTool) }));
+                return base.Tools
+                    // Remove unneeded
+                    .Except((new Type[] { typeof(PlayTool), typeof(MaestroTool) }))
+                    // Add new
+                    .Concat(new Type[] { typeof(IKTool) });
             }
         }
     }
