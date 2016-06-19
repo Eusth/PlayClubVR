@@ -16,20 +16,21 @@ namespace PlayClubVR
 {
     public class PlayClubSeatedMode : SeatedMode
     {
-        private static bool _ControllerFound = false;
         private FieldInfo _IllusionCameraRotation = typeof(IllusionCamera).GetField("rotate", BindingFlags.NonPublic | BindingFlags.Instance);
         private IllusionCamera _IllusionCamera;
-        protected void OnEnable()
+
+        protected override void OnEnable()
         {
+            base.OnEnable();
             Logger.Info("Enter seated mode");
-            SteamVR_Utils.Event.Listen("device_connected", OnDeviceConnected);
             GamePadController.Instance.Register(HandleInput);
 
         }
-        protected void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
+
             Logger.Info("Leave seated mode");
-            SteamVR_Utils.Event.Remove("device_connected", OnDeviceConnected);
             GamePadController.Instance.Unregister(HandleInput);
 
         }
@@ -103,29 +104,9 @@ namespace PlayClubVR
             }
         }
 
-        private void OnDeviceConnected(object[] args)
+        protected override void ChangeModeOnControllersDetected()
         {
-            if (!_ControllerFound)
-            {
-                var index = (uint)(int)args[0];
-                var connected = (bool)args[1];
-                Logger.Info("Device connected: {0}", index);
-
-                if (connected && index > OpenVR.k_unTrackedDeviceIndex_Hmd)
-                {
-                    var system = OpenVR.System;
-                    if (system != null && system.GetTrackedDeviceClass(index) == ETrackedDeviceClass.Controller)
-                    {
-                        _ControllerFound = true;
-
-                        // Switch to standing mode
-                        if(VR.Manager.Mode is PlayClubSeatedMode)
-                        {
-                            ChangeMode();
-                        }
-                    }
-                }
-            }
+            ChangeMode();
         }
 
         protected virtual void ChangeMode()

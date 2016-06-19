@@ -16,12 +16,14 @@ namespace PlayClubVR
 
         protected virtual void OnEnable()
         {
+            base.OnEnable();
             Logger.Info("Enter standing mode");
 
         }
 
         protected virtual void OnDisable()
         {
+            base.OnDisable();
             Logger.Info("Leave standing mode");
         }
 
