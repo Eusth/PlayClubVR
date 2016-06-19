@@ -12,8 +12,85 @@ using VRGIN.Controls.Tools;
 
 namespace PlayClubStudioVR
 {
+    static class IKCtrl
+    {
+        private static bool _Ik = true;
+
+
+        internal static void Change(bool state)
+        {
+            foreach (var actor in VR.Interpreter.Actors.OfType<StudioActor>())
+            {
+                bool ikState = state && _Ik;
+                bool fkState = state && !_Ik;
+
+                //if (ikState)
+                //{
+                //    actor.Actor.ikCtrl.SetActive(ikState);
+                //}
+                //if(fkState) {
+                //    actor.Actor.fkCtrl.SetActive(fkState);
+                //}
+
+                //actor.Actor.ikCtrl.SetActiveTargets(ikState);
+                //actor.Actor.fkCtrl.SetActiveTargets(fkState);
+                
+                //if(ikState)
+                //{
+                //    actor.Actor.ikCtrl.SetupIK();
+                //}
+                //if(fkState)
+                //{
+                //    actor.Actor.fkCtrl.SetupFK();
+                //}
+
+                bool isActive = actor.Actor.fkCtrl.IsActive;
+
+                if (state)
+                {
+                    actor.Actor.ikCtrl.SetActive(ikState);
+                    actor.Actor.fkCtrl.SetActive(state);
+                }
+                
+                actor.Actor.ikCtrl.SetActiveTargets(ikState);
+                actor.Actor.fkCtrl.SetActiveTargets(fkState);
+
+                if (ikState)
+                {
+                    actor.Actor.ikCtrl.SetupIK();
+                    if (!isActive)
+                    {
+                        actor.Actor.fkCtrl.SetupFK();
+                    }
+                }
+                else if (fkState)
+                {
+                    actor.Actor.fkCtrl.SetupFK();
+                }
+
+            }
+        }
+
+        internal static void Enable()
+        {
+            Change(true);
+        }
+
+        internal static void Disable()
+        {
+            Change(false);
+        }
+
+        internal static void Toggle()
+        {
+            _Ik = !_Ik;
+            Change(true);
+        }
+    }
     class IKTool : Tool
     {
+        private const float MAX_DISTANCE = 0.5f;
+
         private static string[] BLACKLIST = new string[] { "XY", "YZ", "XZ", "RingGuidZ", "RingGuidX", "RingGuidY" };
         private readonly static int GIZMO_LAYER = LayerMask.NameToLayer("DriveUI");
         private bool _Dragging = false;
@@ -47,8 +124,18 @@ namespace PlayClubStudioVR
         {
             base.OnDisable();
             Owner.StopRumble(_Rumble);
+
+            if(!(Owner.Other.ActiveTool is IKTool))
+            {
+                IKCtrl.Disable();
+            }
         }
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            IKCtrl.Enable();
+        }
         protected override void OnFixedUpdate()
         {
             base.OnFixedUpdate();
@@ -85,13 +172,24 @@ namespace PlayClubStudioVR
                         Owner.StopRumble(_Rumble);
                     }
                 }
+                if(device.GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad))
+                {
+                    IKCtrl.Toggle();
+                }
             }
         }
 
         private GameObject FindNearestHandle()
         {
             var nearest = GameObject.FindObjectsOfType<GuideDrive>().OrderBy(g => Vector3.Distance(g.transform.position, transform.position)).FirstOrDefault();
-            return nearest ? nearest.gameObject : null;
+            if(nearest)
+            {
+                if (Vector3.Distance(nearest.transform.position, transform.position) <= MAX_DISTANCE)
+                {
+                    return nearest.gameObject;
+                }
+            }
+            return null;
         }
 
         //public void OnTriggerEnter(Collider other)
