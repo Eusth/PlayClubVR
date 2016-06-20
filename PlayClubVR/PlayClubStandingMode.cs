@@ -72,9 +72,9 @@ namespace PlayClubVR
 
             foreach (var controller in new Controller[] { Left, Right })
             {
-                var boneCollider = new GameObject("Dynamic Collider").AddComponent<DynamicBoneCollider_Custom>();
+                var boneCollider = new GameObject("Dynamic Collider").AddComponent<DynamicBoneCollider>();
                 boneCollider.transform.SetParent(controller.transform, false);
-                boneCollider.m_Radius = 0.005f; // Does not seem to have an effect
+                boneCollider.m_Radius = -0.05f; // Does not seem to have an effect
                 boneCollider.m_Center.y = -0.03f;
                 boneCollider.m_Center.z = 0.01f;
                 boneCollider.m_Bound = DynamicBoneCollider.Bound.Outside;

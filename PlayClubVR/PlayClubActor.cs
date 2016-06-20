@@ -57,12 +57,12 @@ namespace PlayClubVR
             }
 
             // Register bone collider
-            RegisterDynamicBoneCollider(VR.Mode.Left.GetComponentInChildren<DynamicBoneCollider_Custom>());
-            RegisterDynamicBoneCollider(VR.Mode.Right.GetComponentInChildren<DynamicBoneCollider_Custom>());
+            RegisterDynamicBoneCollider(VR.Mode.Left.GetComponentInChildren<DynamicBoneCollider>());
+            RegisterDynamicBoneCollider(VR.Mode.Right.GetComponentInChildren<DynamicBoneCollider>());
         }
 
 
-        public void RegisterDynamicBoneCollider(DynamicBoneCollider_Custom collider)
+        public void RegisterDynamicBoneCollider(DynamicBoneCollider collider)
         {
             if (collider)
             {
