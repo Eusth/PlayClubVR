@@ -62,6 +62,10 @@
       <HintPath>..\VRGIN\Libs\Unity 4.6\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="WindowsInput, Version=0.2.0.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\VRGIN\Libs\WindowsInput.dll</HintPath>
+    </Reference>
     <Reference Include="XInputDotNetPure">
       <HintPath>..\Libs\XInputDotNetPure.dll</HintPath>
     </Reference>
