@@ -13,7 +13,6 @@ namespace PlayClubVR
 
         private DefaultMaterialPalette _Materials;
         private VRSettings _Settings;
-        private string[] _IgnoredCanvas = new string[0];
 
         public PlayClubContext()
         {
@@ -31,19 +30,11 @@ namespace PlayClubVR
             }
         }
 
-        public string HMDLayer
+        public string InvisibleLayer
         {
             get
             {
                 return "ScreenShot";
-            }
-        }
-
-        public string[] IgnoredCanvas
-        {
-            get
-            {
-                return _IgnoredCanvas;
             }
         }
 

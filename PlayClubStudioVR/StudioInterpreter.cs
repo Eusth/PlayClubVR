@@ -13,6 +13,7 @@ namespace PlayClubStudioVR
         public StudioScene _Scene;
 
         private List<IActor> _Actors = new List<IActor>();
+        private readonly int pngLayer = LayerMask.NameToLayer("PNG");
         public override IEnumerable<IActor> Actors
         {
             get { return _Actors; }
@@ -66,6 +67,11 @@ namespace PlayClubStudioVR
             {
                 AddActor(member.human);
             }
+        }
+
+        public override bool IsIgnoredCanvas(Canvas canvas)
+        {
+            return canvas.gameObject.layer == pngLayer;
         }
 
         private void AddActor(Human member)

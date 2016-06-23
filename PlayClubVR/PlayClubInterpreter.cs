@@ -14,6 +14,7 @@ namespace PlayClubVR
         /// </summary>
         public H_Scene Scene { get; private set; }
 
+        private readonly int pngLayer = LayerMask.NameToLayer("PNG");
         private List<IActor> _Actors = new List<IActor>();
         public override IEnumerable<IActor> Actors
         {
@@ -35,7 +36,13 @@ namespace PlayClubVR
             }
             
         }
-       
+
+        public override bool IsIgnoredCanvas(Canvas canvas)
+        {
+            return canvas.gameObject.layer == pngLayer;
+        }
+
+
         protected override void OnLevel(int level)
         {
             base.OnLevel(level);
