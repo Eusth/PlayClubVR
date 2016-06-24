@@ -123,7 +123,7 @@ STUB
 Settings can be changed in the file *vr_settings.xml*, which is generated the first time you start the game. Use `RenderScale` to tweak the resolution, **not** the internal resolution dialog, as that one will currently only change the resolution of the GUI.
 
 Tag      | Default | Effect | Mode
-----     | ------  | ------ |
+----     | ------  | ------ | ----
 `<Distance>` | 0.3 | Sets the distance between the camera and the GUI at `[0,0,0]`. | Seated
 `<Angle>` | 170 | Sets the width of the arc the GUI takes up.  | Seated
 `<IPDScale>` | 1 | Sets the scale of the camera. The higher, the more gigantic the player is. | Seated / Standing
