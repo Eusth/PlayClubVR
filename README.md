@@ -18,12 +18,12 @@ PlayClub comes in two *modes*:
 | Mode        | Description         |
 | ----------- | ------------------- |
 | Seated      | *Default mode.* This mode lets you play the game with a mouse, keyboard, or gamepad.<br />The controls are essentially the same as in the main game. The screen is presented on a big monitor in front of you. |
-| Standing    | As soon as *tracked controllers* are registered by the game, it switches into *standing mode*, also called *room scale mode*. In this mode, you can freely move around and use your Vive or Touch controllers to do cool stuff. |
+| Standing    | As soon as tracked controllers are registered by the game, it switches into *standing mode*, also called *room scale mode*. In this mode, you can freely move around and use your Vive or Touch controllers to do cool stuff. |
 
 
 ### Seated Mode
 
-As stated earlier, the controls are basically the same as in the main game with the exception of a few VR-related shortcuts. You are presented with a screen in front of your that replaces your monitor and can be configured via the settings via shortcus (see below).
+As stated earlier, the controls are basically the same as in the main game with the exception of a few VR-related shortcuts. You are presented with a screen in front of your that replaces your monitor and can be configured via the settings or via shortcuts (see below).
 
 #### Keyboard Shortcuts
 
@@ -48,7 +48,11 @@ Keys      | Effect
 
 #### Gamepad Bindings
 
-Keys      | Effect
+This mod comes with a plugin that enables XInput devices to work with Play Club. Actually, you can also use most of these key bindings in the game *without* VR!
+
+If you don't know what those buttons mean, take a look [at this image](https://commons.wikimedia.org/wiki/File:360_controller.svg).
+
+Buttons      | Effect
 ----      | ------
 <kbd>Move LS</kbd> | Control cursor
 <kbd>Move RS</kbd> | Rotate & zoom
