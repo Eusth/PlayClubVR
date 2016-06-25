@@ -1,31 +1,30 @@
 # PlayClubVR
 
-This is a mod for Play Club that introduces VR capabilities for both the Vive and the Oculus Rift using OpenVR. It provides both a seated and a standing mode to be usable in any environment.
+このMODでプレイクラブがVRで楽しめます。OpenVRを使用しているので、Viveもオキュラスも対応しています。
 
 
-## Installation
+## 導入方法
 
-1. Extract files into your *PlayClub* directory.
-2. Run *PlayClubVR.exe* or *PlayClubStudioVR.exe*
-3. Enjoy!
+1. ダウンロードしたファイルを*PlayClub*フォルダーへ解凍
+2. *PlayClubVR.exe*または*PlayClubStudioVR.exe*を起動
+3. それだけでおｋ
 
-**Caution:** SteamVR needs to be installed, set up, and running! Rift users might otherwise experience a weird "monitor" effect.
+※ SteamVRをインストールして起動する必要があります。
 
-## Modes & Controls
+## モードや操作方法
 
-PlayClubVR comes in two *modes*:
+PlayClubVRには２つのモードがあります。
 
-| Mode        | Description         |
+| モード        | 解説         |
 | ----------- | ------------------- |
-| Seated      | *Default mode.* This mode lets you play the game with a mouse, keyboard, or gamepad.<br />The controls are essentially the same as in the main game. The screen is presented on a big monitor in front of you. |
-| Standing    | As soon as *tracked controllers* are registered by the game, it switches into *standing mode*, also called *room scale mode*. In this mode, you can freely move around and use your Vive or Touch controllers to do cool stuff. |
+| Seated      | *デフォルト。*このモードではマウスとキーボードとゲームパッドで入力します。<br />操作の仕方も大体本ゲームと同じです。UIは大きな画面でユーザーの前で表示されます。|
+| Standing    | ViveコントローラーやTouchみたいなコントローラーが検出されると自動的にStandingモードに移動します。このモードでは、自由に動いてコントローラーでイイことが出来ます。|
 
-
-### Seated Mode
+### Seatedモード
 
 As stated earlier, the controls are basically the same as in the main game with the exception of a few VR-related shortcuts. You are presented with a screen in front of your that replaces your monitor and can be configured via the settings via shortcus (see below).
 
-#### Keyboard Shortcuts
+#### キーボード
 
 Keys      | Effect
 ----      | ------
@@ -76,11 +75,11 @@ Keys      | Effect
 
 The *standing mode* is where things start to get interesting. This mode is pretty much disconnected from the usual game in that it comes with its very own controls -- although you can still use your mouse and your keyboard.
 
-#### Keyboard Shortcuts
+#### キーボード
 
 Keys      | Effect
 ----      | ------
-<kbd>Ctrl</kbd>+<kbd>C</kbd>, <kbd>Ctrl</kbd>+<kbd>C</kbd> | Change to *s mode*.
+<kbd>Ctrl</kbd>+<kbd>C</kbd>, <kbd>Ctrl</kbd>+<kbd>C</kbd> | Change to *standing mode*.
 <kbd>Ctrl</kbd>+<kbd>C</kbd>, <kbd>Ctrl</kbd>+<kbd>V</kbd> | Enable (very experimental) third person camera. [Was used for this video](https://www.youtube.com/watch?v=0klN6gd1ybM).
 <kbd>Alt</kbd>+<kbd>S</kbd> | Save settings (IPD, screen position, etc.).
 <kbd>Alt</kbd>+<kbd>L</kbd> | Load settings (last saved state).
@@ -88,7 +87,7 @@ Keys      | Effect
 <kbd>Ctrl</kbd>+<kbd>F5</kbd> | Apply shaders (only for the brave)
 <kbd>Alt</kbd>+<kbd>NumPad +</kbd> <br /> <kbd>Alt</kbd>+<kbd>NumPad –</kbd> | Increase / decrease player scale
 
-#### Impersonation
+#### 憑依
 
 *Impersonating* someone is as easy as moving at the position of that character's head. The head will disappear and you can pretend to be him / her. By setting `<FullImpersonation>` you can even control their hands!
 
@@ -96,7 +95,7 @@ Keys      | Effect
 
 Interacting is currently only possible either with the conductor tool (which lets you move around the limbs of characters), or by touching the breasts, hair or skirts of girls. They will then start to wiggle more or less realistically, but it can be fun.
 
-## Tools
+## ツール
 
 These tools are mainly meant to be used in *standing mode* but some of them are also available in *seated mode*.
 
@@ -118,7 +117,7 @@ STUB
 
 STUB
 
-## Settings & Tweaks
+## 環境設定
 
 Settings can be changed in the file *vr_settings.xml*, which is generated the first time you start the game. Use `RenderScale` to tweak the resolution, **not** the internal resolution dialog, as that one will currently only change the resolution of the GUI.
 
