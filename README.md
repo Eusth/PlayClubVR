@@ -5,7 +5,7 @@ This is a mod for Play Club that introduces VR capabilities for both the Vive an
 
 ## Installation
 
-1. Extract files into your *PlayClub* directory.
+1. Download [the latest release](https://github.com/Eusth/PlayClubVR/releases) and extract it into your *PlayClub* directory.
 2. Run *PlayClubVR.exe* or *PlayClubStudioVR.exe*
 3. Enjoy!
 
