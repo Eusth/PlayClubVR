@@ -102,25 +102,89 @@ Interacting is currently only possible either with the conductor tool (which let
 
 ## Tools
 
-These tools are mainly meant to be used in *standing mode* but some of them are also available in *seated mode*.
+These tools are mainly meant to be used in *standing mode* but some of them are also available in *seated mode*. By default, your left hand will start with the *menu tool* and your right hand will start with the *warp tool*. In order to change them on either hand, press the *menu button* on your Vive controller. [See here an overview of buttons](https://forums.unrealengine.com/attachment.php?attachmentid=87367&d=1460020388).
+
+**You can get in-game help any time by holding the menu button!**
 
 ### Menu Tool (seated / standing)
 
-STUB
+With the *menu tool* you can interact with the user interface of the game. There are, in fact, two ways you can control the mouse: a two-handed way that makes use of a laser pointer, and a one-handed way that lets you use your trackpad like a ... touchpad!
+
+#### Laser pointer
+
+To use the laser pointer, simply point the *other controller* at the menu screen. A laser pointer will appear and you can easily interact with the UI. To make a click, press the trigger button.
+
+#### Trackpad
+
+To use the trackpad, slide with your thumb over the trackpad and the mouse cursor will move accordingly. To make a click, press the trackpad.
+
+#### Attaching, Detaching and Resizing the Menu
+
+It's possible to detach and resize the menu you're holding at any point in the game.
+
+Simply press the grip button to "let go" of the menu screen -- the screen will then stay put where you left it. You can even use other tools and still interact with the screen using the *laser pointer* mechanism.
+
+Furthermore, it's possible to *resize* the screen. In order to do that, point both your controllers at a screen, press the trigger button, and move the controllers apart. It's also possible to move the screen around like this.
+
+Lastly, to take control of the screen again, press the grip button once more.
 
 ### Warp Tool (standing)
 
-STUB
+The *warp tool* is only available in room scale mode and allows you to jump around in the scene.
+
+#### Warping
+
+In order to warp, touch the trackpad, choose your position and press. While touching the trackpad you are able to see:
+
+1. Where you will warp to
+2. Your play area
+3. A HMD that further shows where your head will be
+
+You can also *rotate* your play area while touching the trackpad by drawing circles with your thumb.
+
+#### Impersonation
+
+With this tool it's also possible to jump to the position of the protagonist: it's as easy as pressing the trigger button.
+
+However, this will only change your position along the ground plane and *not* adjust your height! If you are too lazy to move into the right position in real life, *hold* the trigger and your height will also be adjusted.
+
+#### Changing Scale and Height
+
+It's also possible to change scale and height with this tool, although it's a bit cumbersome at the moment. To do this, hold the trackpad *pressed* before warping. You can now change your future height by moving the Vive controller up and down and your scale by moving back and forth. Note that you can only change one of those two each time.
 
 ### Play Tool (standing)
 
-STUB
+The *play tool* is used to interact with the scene.
+
+Button   | Effect
+---   | ---
+Trackpad up | Start the action (piston movement)
+Trackpad down | Start the action (grind movement)
+Trackpad left | Previous position
+Trackpad right | Next position
+Grip | Finish
+
+You can also change the speed of the animation. In order to do this, touch the center of the trackpad and slide your thumb up or down.
 
 ### Conductor Tool (seated / standing)
 
 **Caution:** Requires [Maestro Mode](hongfire.com/forum/showthread.php/440160-%28Illusion%29-Play-Club?p=3667135#post3667135) to work in the main game!
 
-STUB
+The *conductor tool* lets you pose the guys and gals. The tool works differently in the main game and the studio.
+
+#### Studio
+
+The tool is basically a wrapper around the built-in FK/IK functionality. The IK/FK handles are automatically activated when you have this tool in either hand, and deactivated when you don't have this tool in either hand. Press the trackpad to switch between IK and FK modes.
+
+To interact with the handles, simply grab them using the trigger button. **You do not need to hover over them exactly!** The tool will automatically detect the nearest handle and take control of it!
+
+#### Main Game
+
+In the main game you can use this tool if you install the [Maestro Mode](hongfire.com/forum/showthread.php/440160-%28Illusion%29-Play-Club?p=3667135#post3667135) plugin.
+
+Press the trackpad to toggle *Maestro Mode* on or off. When it's on, you should see blocks and spheres inside the body of your girl. In order to move them around, simply grab them with the *trigger* button. You can also reset their position by pressing the *grip* button.
+
+**Caution**: For this to work, you mustn't reconfigure the key bindings of Maestro Mode!
 
 ## Settings & Tweaks
 
