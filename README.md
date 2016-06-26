@@ -152,6 +152,8 @@ However, this will only change your position along the ground plane and *not* ad
 
 It's also possible to change scale and height with this tool, although it's a bit cumbersome at the moment. To do this, hold the trackpad *pressed* before warping. You can now change your future height by moving the Vive controller up and down and your scale by moving back and forth. Note that you can only change one of those two each time.
 
+By pressing the *grip button* you can reset the scale and height.
+
 ### Play Tool (standing)
 
 The *play tool* is used to interact with the scene.
