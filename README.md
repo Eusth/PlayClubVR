@@ -124,7 +124,7 @@ To use the trackpad, slide with your thumb over the trackpad and the mouse curso
 
 #### Attaching, Detaching and Resizing the Menu
 
-<img src="Manual/scale.png">
+<img src="Manual/scale.jpg">
 
 It's possible to detach and resize the menu you're holding at any point in the game.
 
