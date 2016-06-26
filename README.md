@@ -108,9 +108,13 @@ These tools are mainly meant to be used in *standing mode* but some of them are 
 
 ### Menu Tool (seated / standing)
 
+<img src="Manual/menu_tool.png">
+
 With the *menu tool* you can interact with the user interface of the game. There are, in fact, two ways you can control the mouse: a two-handed way that makes use of a laser pointer, and a one-handed way that lets you use your trackpad like a ... touchpad!
 
 #### Laser pointer
+
+<img src="Manual/laser_pointer.jpg">
 
 To use the laser pointer, simply point the *other controller* at the menu screen. A laser pointer will appear and you can easily interact with the UI. To make a click, press the trigger button.
 
@@ -119,6 +123,8 @@ To use the laser pointer, simply point the *other controller* at the menu screen
 To use the trackpad, slide with your thumb over the trackpad and the mouse cursor will move accordingly. To make a click, press the trackpad.
 
 #### Attaching, Detaching and Resizing the Menu
+
+<img src="Manual/scale.png">
 
 It's possible to detach and resize the menu you're holding at any point in the game.
 
@@ -129,6 +135,8 @@ Furthermore, it's possible to *resize* the screen. In order to do that, point bo
 Lastly, to take control of the screen again, press the grip button once more.
 
 ### Warp Tool (standing)
+
+<img src="Manual/warp_tool.png">
 
 The *warp tool* is only available in room scale mode and allows you to jump around in the scene.
 
@@ -141,6 +149,8 @@ In order to warp, touch the trackpad, choose your position and press. While touc
 3. A HMD that further shows where your head will be
 
 You can also *rotate* your play area while touching the trackpad by drawing circles with your thumb.
+
+<img src="Manual/warp.jpg">
 
 #### Impersonation
 
@@ -156,6 +166,8 @@ By pressing the *grip button* you can reset the scale and height.
 
 ### Play Tool (standing)
 
+<img src="Manual/play_tool.png">
+
 The *play tool* is used to interact with the scene.
 
 Button   | Effect
@@ -169,6 +181,8 @@ Grip | Finish
 You can also change the speed of the animation. In order to do this, touch the center of the trackpad and slide your thumb up or down.
 
 ### Conductor Tool (seated / standing)
+
+<img src="Manual/maestro_tool.png">
 
 **Caution:** Requires [Maestro Mode](hongfire.com/forum/showthread.php/440160-%28Illusion%29-Play-Club?p=3667135#post3667135) to work in the main game!
 
