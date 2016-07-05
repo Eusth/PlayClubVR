@@ -44,7 +44,7 @@ namespace GamePadClub.Handlers
         bool HandleGUI(GamePadState now, GamePadState before)
         {
 
-            if (GamePadHelper.IsPressUp(now.Buttons.Back, before.Buttons.Back))
+            if (GamePadHelper.IsPressUp(now.Buttons.Start, before.Buttons.Start))
             {
                 _GC.IsHideUI = !_GC.IsHideUI;
             }

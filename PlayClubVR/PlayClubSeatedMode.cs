@@ -36,14 +36,14 @@ namespace PlayClubVR
         }
 
         bool HandleInput(GamePadState nowState, GamePadState prevState)
-        {
-            if (GamePadHelper.IsPressUp(nowState.Buttons.Start, prevState.Buttons.Start))
-            {
-                Recenter();
-            }
-            
+        {        
             if (nowState.Buttons.LeftShoulder == ButtonState.Pressed)
             {
+                if (GamePadHelper.IsPressUp(nowState.Buttons.Start, prevState.Buttons.Start))
+                {
+                    Recenter();
+                }
+
                 Vector2 rightStick = new Vector2(nowState.ThumbSticks.Right.X, nowState.ThumbSticks.Right.Y);
                 Vector2 leftStick = new Vector2(nowState.ThumbSticks.Left.X, nowState.ThumbSticks.Left.Y);
                 if(rightStick.magnitude > 0.1f)

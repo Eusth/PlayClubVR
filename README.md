@@ -64,7 +64,7 @@ Buttons      | Effect
 <kbd>B</kbd> | Right click
 <kbd>X</kbd> | Toggle "grind" animation
 <kbd>Y</kbd> | Toggle "piston" animation
-<kbd>Back</kbd> | Toggle GUI
+<kbd>Start</kbd> | Toggle GUI
 <kbd>DPad Up</kbd> / <kbd>DPad Down</kbd> | Change animation speed
 <kbd>DPad Left</kbd> / <kbd>DPad Right</kbd> | Change position (prev / next)
 <kbd>Press RS</kbd> | Come inside
@@ -75,6 +75,7 @@ Buttons      | Effect
 <kbd>LB</kbd>+<kbd>RS Vertically</kbd> | Change GUI width
 <kbd>LB</kbd>+<kbd>DPad Up</kbd> / <kbd>LB</kbd>+<kbd>DPad Down</kbd> | Change player scale
 <kbd>LB</kbd>+<kbd>Y</kbd> | Impersonate protatonist
+<kbd>LB</kbd>+<kbd>Start</kbd> | Reset camera
 
 ### Standing Mode
 
