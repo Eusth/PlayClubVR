@@ -165,6 +165,15 @@ It's also possible to change scale and height with this tool, although it's a bi
 
 By pressing the *grip button* you can reset the scale and height.
 
+#### Grabbing
+
+An alternative way to move your position is "grabbing." Just hold the grip button and move the controller around to 
+move in the opposite direction.
+
+This also works in conjunction with warping. To get back to ground level, press the grip button once to reset your play area and warp somewhere.
+
+**Note**: Grabbing is activated if A) you hold the grip button for more than 0.5s or B) you move your controller for more than 3cm. This is to discern between resetting and grabbing.  
+
 ### Play Tool (standing)
 
 <img src="Manual/play_tool.png">
