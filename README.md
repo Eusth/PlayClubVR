@@ -218,7 +218,8 @@ Tag      | Default | Effect | Mode
 `<RenderScale>` | 1 | Sets the render scale of the renderer. Increase for better quality but less performance, decrease for more performance but poor quality. | Seated / Standing
 `<MirrorScreen>` | False | Sets whether or not the view should be mirrored in the game window. | Seated / Standing
 `<FullImpersonation>` | False | Sets whether or not you should take control over the character's hands whenever you impersonate someone. | Standing
-
+`<PitchLock>` | True | Sets whether or not rotating around the horizontal axis is allowed. | Seated
+`<Projection>` | Curved | Sets the projection mode of the monitor in seated mode. (Flat / Curved / Spherical) | Seated
 ## Building PlayClubVR
 
 PlayClubVR depends on the [VRGIN.Core](https://github.com/Eusth/VRGIN.Core) library which is included as a submodule. It is therefore important that when you clone the project, you clone it recursively.
