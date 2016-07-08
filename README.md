@@ -101,6 +101,37 @@ Keys      | Effect
 
 Interacting is currently only possible either with the conductor tool (which lets you move around the limbs of characters), or by touching the breasts, hair or skirts of girls. They will then start to wiggle more or less realistically, but it can be fun.
 
+## Speech Recognition
+
+PlayClubVR comes with speech recognition, based on Windows built-in speech recognition system. Therefore, any language can be used as long as you have the right language pack installed.
+
+### Preparations
+
+In order to get the speech recognition working, you need to install the appropriate language pack. Chances are that it's already installed, but to make sure follow these steps (on Windows 10):
+
+1. Open "Region & language settings"
+2. Click on the language you want to install and hit "Options"
+3. Under "Speech" click "Download"
+
+### Configuring
+
+When you start the game and speech recognition is enabled, it will generate a dictionary file at *UserData/dictionaries/{Locale}.txt* that you can edit. (Locale can be set in *vr_settings.xml*)
+
+The file is built up like so:
+
+```
+[Command1]
+Text 1
+Text 2
+...
+
+[Command2]
+Text 3
+Text 4
+```
+
+The commands are used by the game to do things like scaling the camera or controlling the animation. The texts are what you have to say to activate the commands.
+
 ## Tools
 
 These tools are mainly meant to be used in *standing mode* but some of them are also available in *seated mode*. By default, your left hand will start with the *menu tool* and your right hand will start with the *warp tool*. In order to change them on either hand, press the *menu button* on your Vive controller. [See here an overview of buttons](https://forums.unrealengine.com/attachment.php?attachmentid=87367&d=1460020388).
@@ -229,6 +260,9 @@ Tag      | Default | Effect | Mode
 `<FullImpersonation>` | False | Sets whether or not you should take control over the character's hands whenever you impersonate someone. | Standing
 `<PitchLock>` | True | Sets whether or not rotating around the horizontal axis is allowed. | Seated
 `<Projection>` | Curved | Sets the projection mode of the monitor in seated mode. (Flat / Curved / Spherical) | Seated
+`<SpeechRecognition>` | False | Sets whether or not speech recognition is enabled. | Seated / Standing
+`<Locale>` | en-US | Sets which locale is used for speech recognition. | Seated / Standing
+
 ## Building PlayClubVR
 
 PlayClubVR depends on the [VRGIN.Core](https://github.com/Eusth/VRGIN.Core) library which is included as a submodule. It is therefore important that when you clone the project, you clone it recursively.
