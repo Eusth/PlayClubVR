@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using VRGIN.Controls.Speech;
 using VRGIN.Core;
 using VRGIN.Visuals;
 
@@ -91,6 +92,14 @@ namespace PlayClubVR
             get
             {
                 return true;
+            }
+        }
+
+        public Type VoiceCommandType
+        {
+            get
+            {
+                return typeof(PlayClubVoiceCommand);
             }
         }
     }

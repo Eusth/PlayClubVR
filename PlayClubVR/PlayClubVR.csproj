@@ -81,6 +81,7 @@
     <Compile Include="PlayClubSeatedMode.cs" />
     <Compile Include="PlayClubSettings.cs" />
     <Compile Include="PlayClubStandingMode.cs" />
+    <Compile Include="PlayClubVoiceCommands.cs" />
     <Compile Include="PlayClubVR.cs" />
     <Compile Include="PlayTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

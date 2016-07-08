@@ -7,6 +7,7 @@ using VRGIN.Core;
 using VRGIN.Controls;
 using VRGIN.Helpers;
 using VRGIN.Modes;
+using VRGIN.Controls.Speech;
 
 namespace PlayClubVR
 {
@@ -56,8 +57,20 @@ namespace PlayClubVR
 
         protected override IEnumerable<IShortcut> CreateShortcuts()
         {
+            var interpreter = VR.Interpreter as PlayClubInterpreter;
+
             return base.CreateShortcuts().Concat(new IShortcut[] {
                 new MultiKeyboardShortcut(new KeyStroke("Ctrl + C"), new KeyStroke("Ctrl + C"), ChangeMode ),
+
+                new VoiceShortcut(PlayClubVoiceCommand.StartAnimation, delegate { interpreter.TogglePiston(true); }),
+                new VoiceShortcut(PlayClubVoiceCommand.StopAnimation, delegate { interpreter.TogglePiston(false); }),
+                new VoiceShortcut(PlayClubVoiceCommand.Faster, delegate { interpreter.IncreaseSpeed(0.6f); }),
+                new VoiceShortcut(PlayClubVoiceCommand.Slower, delegate { interpreter.IncreaseSpeed(-0.6f); }),
+                new VoiceShortcut(PlayClubVoiceCommand.Climax, delegate { interpreter.Ejaculate(); }),
+                new VoiceShortcut(PlayClubVoiceCommand.NextAnimation, delegate { interpreter.ChangePose(1); }),
+                new VoiceShortcut(PlayClubVoiceCommand.PreviousAnimation, delegate { interpreter.ChangePose(-1); }),
+                new VoiceShortcut(PlayClubVoiceCommand.DisableClimax, delegate { interpreter.ToggleOrgasmLock(true); }),
+                new VoiceShortcut(PlayClubVoiceCommand.EnableClimax, delegate { interpreter.ToggleOrgasmLock(false); }),
             });
         }
 

@@ -50,25 +50,25 @@ namespace PlayClubVR
                     if (Vector2.Dot(Vector2.up, tPadPos) > DOT_PRODUCT_THRESHOLD)
                     {
                         Logger.Debug("up");
-                        TogglePiston();
+                        (VR.Interpreter as PlayClubInterpreter).TogglePiston();
                     }
                     else if (Vector2.Dot(-Vector2.up, tPadPos) > DOT_PRODUCT_THRESHOLD)
                     {
                         Logger.Debug("down");
 
-                        ToggleGrind();
+                        (VR.Interpreter as PlayClubInterpreter).ToggleGrind();
                     }
                     else if (Vector2.Dot(-Vector2.right, tPadPos) > DOT_PRODUCT_THRESHOLD)
                     {
                         Logger.Debug("left");
 
-                        ChangePose(-1);
+                        (VR.Interpreter as PlayClubInterpreter).ChangePose(-1);
                     }
                     else if (Vector2.Dot(Vector2.right, tPadPos) > DOT_PRODUCT_THRESHOLD)
                     {
                         Logger.Debug("right");
 
-                        ChangePose(1);
+                        (VR.Interpreter as PlayClubInterpreter).ChangePose(1);
                     }
                 }
                 if (device.GetTouchDown(EVRButtonId.k_EButton_Axis0))
@@ -83,7 +83,7 @@ namespace PlayClubVR
                 {
                     // Normalize
                     float val = (tPadPos.y + 1) / 2;
-                    SetSpeed(val);
+                    (VR.Interpreter as PlayClubInterpreter).SetSpeed(val);
                 }
                 if (device.GetTouchUp(EVRButtonId.k_EButton_Axis0))
                 {
@@ -103,7 +103,7 @@ namespace PlayClubVR
                     }
                     else
                     {
-                        Ejaculate();
+                        (VR.Interpreter as PlayClubInterpreter).Ejaculate();
                     }
                 }
             }
@@ -113,64 +113,7 @@ namespace PlayClubVR
         {
             _IgnoreNextTrigger = true;
         }
-
-        private void ToggleOrgasmLock()
-        {
-            //Console.WriteLine(!scene.FemaleGage.Lock ? "Lock" : "Unlock");
-            // This also updates the GUI!
-            GameObject.Find("XtcLock").GetComponent<Toggle>().isOn = !scene.FemaleGage.Lock;
-            //scene.FemaleGage.ChangeLock(!scene.FemaleGage.Lock);
-        }
-
-
-        private void TogglePiston()
-        {
-            scene.Pad.pistonToggle.OnPointerClick(new PointerEventData(EventSystem.current));
-
-        }
-
-        private void ToggleGrind()
-        {
-            scene.Pad.grindToggle.OnPointerClick(new PointerEventData(EventSystem.current));
-        }
-
-        private void SetSpeed(float val)
-        {
-            scene.Pad.ChangeSpeed(val * 5);
-        }
-
-        private void Ejaculate()
-        {
-            if (scene.FemaleGage.IsHigh())
-            {
-                scene.StateMgr.SetXtc(H_Pad.XTC.SYNC);
-            }
-            else if (scene.Members[0].sex == Human.SEX.MALE)
-            {
-                scene.StateMgr.SetXtc(H_Pad.XTC.M_OUT);
-            }
-            else
-            {
-                scene.StateMgr.SetXtc(H_Pad.XTC.F);
-            }
-        }
-
-        private void ChangePose(int direction)
-        {
-            int currentIndex = scene.StyleMgr.StyleList.IndexOf(scene.StyleMgr.nowStyle);
-            int nextIndex = ((currentIndex + scene.StyleMgr.StyleList.Count) + direction) % scene.StyleMgr.StyleList.Count;
-
-            ChangeStyle(scene.StyleMgr.StyleList[nextIndex].file);
-        }
-
-
-        private void ChangeStyle(string name)
-        {
-            scene.ChangeStyle(name);
-            scene.StyleToGUI(name);
-            scene.CrossFadeStart();
-        }
-
+        
         public override List<HelpText> GetHelpTexts()
         {
             return new List<HelpText>(new HelpText[] {
