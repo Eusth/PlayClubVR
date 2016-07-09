@@ -255,7 +255,7 @@ It is possible to use the menu with your hands. Simply pinch your fingers and pu
 
 Use your index finger to control the mouse cursor.
 
-<img src="Manual/leap_pinch.png">
+<img src="Manual/leap_pinch.gif">
 
 ### Warping
 
@@ -267,7 +267,7 @@ The system is not yet complete, but you can more or less jump around like so:
 
 Your play area should now appear. Keep your hand like this and move it around until you found a good position.
 
-<img src="Manual/leap_warp.png">
+<img src="Manual/leap_warp.gif">
 
 4. Clench a fist again.
 
