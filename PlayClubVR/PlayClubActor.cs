@@ -57,8 +57,10 @@ namespace PlayClubVR
             }
 
             // Register bone collider
-            RegisterDynamicBoneCollider(VR.Mode.Left.GetComponentInChildren<DynamicBoneCollider>());
-            RegisterDynamicBoneCollider(VR.Mode.Right.GetComponentInChildren<DynamicBoneCollider>());
+            foreach(var collider in DynamicColliderRegistry.Colliders)
+            {
+                RegisterDynamicBoneCollider(collider);
+            }
         }
 
 
@@ -73,11 +75,9 @@ namespace PlayClubVR
                 }
                 foreach (var bone in Actor.GetComponentsInChildren<DynamicBone_Custom>())
                 {
-                    Logger.Info("Registering to {0}", bone.name);
-
+                    Logger.Info("Registering to {0} ({1})", bone.name, bone.m_Radius);
                     bone.m_Colliders.Add(collider);
                 }
-                
             }
         }
     }

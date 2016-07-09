@@ -8,6 +8,7 @@ using VRGIN.Controls;
 using VRGIN.Helpers;
 using VRGIN.Modes;
 using VRGIN.Controls.Speech;
+using Leap.Unity;
 
 namespace PlayClubVR
 {
@@ -28,6 +29,12 @@ namespace PlayClubVR
             Logger.Info("Leave standing mode");
         }
 
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            DynamicColliderRegistry.Clear();
+        }
 
         protected override void OnStart()
         {
@@ -92,12 +99,28 @@ namespace PlayClubVR
                 boneCollider.m_Center.z = 0.01f;
                 boneCollider.m_Bound = DynamicBoneCollider.Bound.Outside;
                 boneCollider.m_Direction = DynamicBoneCollider.Direction.X;
+                DynamicColliderRegistry.Register(boneCollider);
 
-                foreach(var actor in VR.Interpreter.Actors.OfType<PlayClubActor>())
-                {
-                    actor.RegisterDynamicBoneCollider(boneCollider);
-                }
             }
+        }
+
+        protected override HandAttachments BuildAttachmentHand(Chirality handedness)
+        {
+            var hand = base.BuildAttachmentHand(handedness);
+
+            foreach (var sphere in new Transform[] { hand.Thumb, hand.Index, hand.Middle, hand.Ring, hand.Pinky, hand.Palm })
+            {
+                var boneCollider = sphere.gameObject.AddComponent<DynamicBoneCollider>();
+                boneCollider.transform.SetParent(sphere, false);
+                boneCollider.m_Radius = -0.05f; // Does not seem to have an effect
+                boneCollider.m_Center.y = 0;
+                boneCollider.m_Center.z = 0;
+                boneCollider.m_Bound = DynamicBoneCollider.Bound.Outside;
+                boneCollider.m_Direction = DynamicBoneCollider.Direction.X;
+                DynamicColliderRegistry.Register(boneCollider);
+            }
+
+            return hand;
         }
 
         protected override void SyncCameras()

@@ -12,6 +12,7 @@ using VRGIN.Modes;
 using GamePadClub;
 using XInputDotNetPure;
 using VRGIN.Controls.Speech;
+using Leap.Unity;
 
 namespace PlayClubVR
 {
@@ -36,6 +37,12 @@ namespace PlayClubVR
 
         }
 
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            DynamicColliderRegistry.Clear();
+        }
         bool HandleInput(GamePadState nowState, GamePadState prevState)
         {        
             if (nowState.Buttons.LeftShoulder == ButtonState.Pressed)
@@ -82,6 +89,25 @@ namespace PlayClubVR
             return false;
         }
 
+        protected override void CreateControllers()
+        {
+            base.CreateControllers();
+
+            foreach (var controller in new Controller[] { Left, Right })
+            {
+                var boneCollider = new GameObject("Dynamic Collider").AddComponent<DynamicBoneCollider>();
+                boneCollider.transform.SetParent(controller.transform, false);
+                boneCollider.m_Radius = 0.01f; // Does not seem to have an effect
+                boneCollider.m_Height = 0f;
+                boneCollider.m_Center.y = 0;
+                boneCollider.m_Center.z = 0;
+                boneCollider.m_Center.x = 0;
+
+                boneCollider.m_Bound = DynamicBoneCollider.Bound.Outside;
+                DynamicColliderRegistry.Register(boneCollider);
+               
+            }
+        }
 
         public override ETrackingUniverseOrigin TrackingOrigin
         {
