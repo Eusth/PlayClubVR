@@ -243,6 +243,34 @@ Press the trackpad to toggle *Maestro Mode* on or off. When it's on, you should 
 
 **Caution**: For this to work, you mustn't reconfigure the key bindings of Maestro Mode!
 
+## Leap Motion
+
+Leap Motion is somewhat supported by PlayClubVR. To enable this feature, set `<Leap>` to `True` in your *vr_settings.xml*.
+
+When the game detects your hands, it will automatically change into room scale mode, so make sure to set up your room correctly.
+
+### Using the Menu
+
+It is possible to use the menu with your hands. Simply pinch your fingers and pull in different directions to draw the interface. To hide it, just keep the area small and it will disappear.
+
+Use your index finger to control the mouse cursor.
+
+<img src="Manual/leap_pinch.png">
+
+### Warping
+
+The system is not yet complete, but you can more or less jump around like so:
+
+1. Hold your hand with the palm facing downwards.
+2. Clench a fist.
+3. Hold your hand with the palm facing downwards.
+
+Your play area should now appear. Keep your hand like this and move it around until you found a good position.
+
+<img src="Manual/leap_warp.png">
+
+4. Clench a fist again.
+
 ## Settings & Tweaks
 
 Settings can be changed in the file *vr_settings.xml*, which is generated the first time you start the game. Use `RenderScale` to tweak the resolution, **not** the internal resolution dialog, as that one will currently only change the resolution of the GUI.
@@ -262,6 +290,7 @@ Tag      | Default | Effect | Mode
 `<Projection>` | Curved | Sets the projection mode of the monitor in seated mode. (Flat / Curved / Spherical) | Seated
 `<SpeechRecognition>` | False | Sets whether or not speech recognition is enabled. | Seated / Standing
 `<Locale>` | en-US | Sets which locale is used for speech recognition. | Seated / Standing
+`<Leap>` | False | Sets whether or not Leap Motion support is activated. | Seated / Standing
 
 ## Building PlayClubVR
 
