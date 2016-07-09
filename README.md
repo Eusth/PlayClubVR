@@ -262,12 +262,12 @@ Use your index finger to control the mouse cursor.
 The system is not yet complete, but you can more or less jump around like so:
 
 1. Hold your hand with the palm facing downwards.
-2. Clench a fist.
+2. Clench your fist.
 3. Hold your hand with the palm facing downwards.
 
 Your play area should now appear. Keep your hand like this and move it around until you found a good position.
 
-4. Clench a fist again.
+4. Clench your fist again.
 
 <img src="Manual/leap_warp.gif">
 
