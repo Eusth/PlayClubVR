@@ -267,9 +267,9 @@ The system is not yet complete, but you can more or less jump around like so:
 
 Your play area should now appear. Keep your hand like this and move it around until you found a good position.
 
-<img src="Manual/leap_warp.gif">
-
 4. Clench a fist again.
+
+<img src="Manual/leap_warp.gif">
 
 ## Settings & Tweaks
 
