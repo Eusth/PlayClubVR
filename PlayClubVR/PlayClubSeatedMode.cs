@@ -104,7 +104,7 @@ namespace PlayClubVR
                 boneCollider.m_Center.x = 0;
 
                 boneCollider.m_Bound = DynamicBoneCollider.Bound.Outside;
-                DynamicColliderRegistry.Register(boneCollider);
+                DynamicColliderRegistry.RegisterCollider(boneCollider);
                
             }
         }

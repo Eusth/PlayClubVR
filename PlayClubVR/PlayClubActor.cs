@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 using VRGIN.Core;
+using VRGIN.Helpers;
 
 namespace PlayClubVR
 {
@@ -56,28 +57,30 @@ namespace PlayClubVR
                 _VoiceField.SetValue(actor.voice, OSPAudioVolumeManager.Create(_VoiceField.GetValue(actor.voice) as AudioVolumeManager));
             }
 
-            // Register bone collider
-            foreach(var collider in DynamicColliderRegistry.Colliders)
+            // Register bones
+            foreach (var bone in SoftCustomBones)
             {
-                RegisterDynamicBoneCollider(collider);
+                DynamicColliderRegistry.RegisterDynamicBone(bone);
+            }
+            foreach (var bone in SoftBones)
+            {
+                DynamicColliderRegistry.RegisterDynamicBone(bone);
             }
         }
 
-
-        public void RegisterDynamicBoneCollider(DynamicBoneCollider collider)
+        public IEnumerable<DynamicBone> SoftBones
         {
-            if (collider)
+            get
             {
-                foreach(var bone in Actor.GetComponentsInChildren<DynamicBone>())
-                {
-                    Logger.Info("Registering to {0}", bone.name);
-                    bone.m_Colliders.Add(collider);
-                }
-                foreach (var bone in Actor.GetComponentsInChildren<DynamicBone_Custom>())
-                {
-                    Logger.Info("Registering to {0} ({1})", bone.name, bone.m_Radius);
-                    bone.m_Colliders.Add(collider);
-                }
+                return Actor.GetComponentsInChildren<DynamicBone>();
+            }
+        }
+
+        public IEnumerable<DynamicBone_Custom> SoftCustomBones
+        {
+            get
+            {
+                return Actor.GetComponentsInChildren<DynamicBone_Custom>();
             }
         }
     }

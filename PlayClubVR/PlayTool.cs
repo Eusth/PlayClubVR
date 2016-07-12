@@ -10,16 +10,22 @@ using VRGIN.Core;
 using VRGIN.Controls;
 using VRGIN.Helpers;
 using VRGIN.Controls.Tools;
+using System.Reflection;
 
 namespace PlayClubVR
 {
     public class PlayTool : Tool
     {
+        private readonly FieldInfo _DynamicBoneParticleField = typeof(DynamicBone).GetField("m_Particles", BindingFlags.Instance | BindingFlags.NonPublic);
+        private readonly FieldInfo _DynamicCustomBoneParticleField = typeof(DynamicBone_Custom).GetField("m_Particles", BindingFlags.Instance | BindingFlags.NonPublic);
+
+
         private const float DOT_PRODUCT_THRESHOLD = 0.7f;
 
         H_Scene scene;
         bool _AlteringSpeed;
         bool _IgnoreNextTrigger;
+        private const float NEAR_THRESHOLD = 0.1f;
 
         public override Texture2D Image
         {
@@ -106,7 +112,72 @@ namespace PlayClubVR
                         (VR.Interpreter as PlayClubInterpreter).Ejaculate();
                     }
                 }
+
+                if(device.GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
+                {
+                    AssociateBoneColliders(FindNearBones());
+                }
+
+                if(device.GetPressUp(EVRButtonId.k_EButton_SteamVR_Trigger))
+                {
+                    DeassociateBoneColliders();
+                }
             }
+        }
+
+        private IDictionary<DynamicBoneCollider, Predicate<IDynamicBoneWrapper>> _ColliderOldSelectorMap = new Dictionary<DynamicBoneCollider, Predicate<IDynamicBoneWrapper>>();
+
+        private void AssociateBoneColliders(IEnumerable<IDynamicBoneWrapper> bones)
+        {
+
+            IDictionary<DynamicBoneCollider, List<IDynamicBoneWrapper>> colliderBoneMap = new Dictionary<DynamicBoneCollider, List<IDynamicBoneWrapper>>();
+            
+            // Find colliders that are responsible for these bones
+            var colliders = GetComponentsInChildren<DynamicBoneCollider>();
+            foreach(var bone in bones)
+            {
+                var atari = colliders.FirstOrDefault(collider => bone.Colliders.Contains(collider));
+                if(atari)
+                {
+                    if(!colliderBoneMap.ContainsKey(atari))
+                    {
+                        colliderBoneMap.Add(atari, new List<IDynamicBoneWrapper>());
+                    }
+
+                    colliderBoneMap[atari].Add(bone);
+                    atari.m_Bound = DynamicBoneCollider.Bound.Inside;
+                }
+            }
+            
+            // Override the match condition for the responsible colliders to *only* cover these bones and ignore all other (because we changed the m_Bound to INside)
+            foreach(var colliderBonePair in colliderBoneMap)
+            {
+                _ColliderOldSelectorMap[colliderBonePair.Key] = DynamicColliderRegistry.GetCondition(colliderBonePair.Key);
+                DynamicColliderRegistry.RegisterCollider(colliderBonePair.Key, (collider) => colliderBonePair.Value.Contains(collider));
+            }
+        }
+
+
+        private void DeassociateBoneColliders()
+        {
+            // Revert the changes made in AssociateBoneColliders() by setting the m_Bound to Outside and restoring the old conditions
+            foreach(var colliderConditionPair in _ColliderOldSelectorMap)
+            {
+                colliderConditionPair.Key.m_Bound = DynamicBoneCollider.Bound.Outside;
+                DynamicColliderRegistry.RegisterCollider(colliderConditionPair.Key, colliderConditionPair.Value);
+            }
+
+            _ColliderOldSelectorMap.Clear();
+        }
+
+        private IEnumerable<IDynamicBoneWrapper> FindNearBones()
+        {
+            VRLog.Info("Hi there");
+            return DynamicColliderRegistry
+                .Bones
+                .Where((bone, i) => 
+                    Vector3.Distance(transform.position, bone.Root.position) < NEAR_THRESHOLD
+                );
         }
 
         private void OnImpersonated()

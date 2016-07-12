@@ -92,16 +92,27 @@ namespace PlayClubVR
 
             foreach (var controller in new Controller[] { Left, Right })
             {
-                var boneCollider = new GameObject("Dynamic Collider").AddComponent<DynamicBoneCollider>();
-                boneCollider.transform.SetParent(controller.transform, false);
-                boneCollider.m_Radius = -0.05f; // Does not seem to have an effect
+                var boneCollider = CreateCollider(controller.transform, -0.05f);
                 boneCollider.m_Center.y = -0.03f;
                 boneCollider.m_Center.z = 0.01f;
-                boneCollider.m_Bound = DynamicBoneCollider.Bound.Outside;
-                boneCollider.m_Direction = DynamicBoneCollider.Direction.X;
-                DynamicColliderRegistry.Register(boneCollider);
+                DynamicColliderRegistry.RegisterCollider(boneCollider, (b) => !IsHair(b));
 
+                boneCollider = CreateCollider(controller.transform, 0.01f);
+                boneCollider.m_Center.y = -0.03f;
+                boneCollider.m_Center.z = 0.01f;
+                DynamicColliderRegistry.RegisterCollider(boneCollider, IsHair);
             }
+        }
+
+        private DynamicBoneCollider CreateCollider(Transform parent, float radius)
+        {
+            var collider = UnityHelper.CreateGameObjectAsChild("Dynamic Collider", parent).gameObject.AddComponent<DynamicBoneCollider>();
+            collider.m_Radius = radius;
+            collider.m_Bound = DynamicBoneCollider.Bound.Outside;
+            collider.m_Direction = DynamicBoneCollider.Direction.X;
+            collider.m_Center.y = 0;
+            collider.m_Center.z = 0;
+            return collider;
         }
 
         protected override HandAttachments BuildAttachmentHand(Chirality handedness)
@@ -110,17 +121,38 @@ namespace PlayClubVR
 
             foreach (var sphere in new Transform[] { hand.Thumb, hand.Index, hand.Middle, hand.Ring, hand.Pinky, hand.Palm })
             {
-                var boneCollider = sphere.gameObject.AddComponent<DynamicBoneCollider>();
-                boneCollider.transform.SetParent(sphere, false);
-                boneCollider.m_Radius = -0.05f; // Does not seem to have an effect
-                boneCollider.m_Center.y = 0;
-                boneCollider.m_Center.z = 0;
-                boneCollider.m_Bound = DynamicBoneCollider.Bound.Outside;
-                boneCollider.m_Direction = DynamicBoneCollider.Direction.X;
-                DynamicColliderRegistry.Register(boneCollider);
+                var boneCollider = CreateCollider(sphere, -0.05f).gameObject.AddComponent<DynamicBoneCollider>();
+                boneCollider.enabled = false;
+                DynamicColliderRegistry.RegisterCollider(boneCollider, (b) => !IsHair(b));
+
+                boneCollider = CreateCollider(sphere, 0.01f).gameObject.AddComponent<DynamicBoneCollider>();
+                boneCollider.enabled = false;
+                DynamicColliderRegistry.RegisterCollider(boneCollider, IsHair);
+
+
             }
+            hand.OnBegin += delegate
+            {
+                foreach(var collider in hand.GetComponentsInChildren<DynamicBoneCollider>())
+                {
+                    collider.enabled = true;
+                }
+            };
+
+            hand.OnFinish += delegate
+            {
+                foreach (var collider in hand.GetComponentsInChildren<DynamicBoneCollider>())
+                {
+                    collider.enabled = false;
+                }
+            };
 
             return hand;
+        }
+
+        private bool IsHair(IDynamicBoneWrapper wrapper)
+        {
+            return wrapper.Bone.name.Contains("hair") || wrapper.Bone.name.Contains("kami");
         }
 
         protected override void SyncCameras()
