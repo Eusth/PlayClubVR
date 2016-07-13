@@ -172,11 +172,12 @@ namespace PlayClubVR
 
         private IEnumerable<IDynamicBoneWrapper> FindNearBones()
         {
-            VRLog.Info("Hi there");
             return DynamicColliderRegistry
                 .Bones
                 .Where((bone, i) => 
-                    Vector3.Distance(transform.position, bone.Root.position) < NEAR_THRESHOLD
+                    bone.Nodes.Any( n =>
+                        Vector3.Distance(transform.position, n.position) < NEAR_THRESHOLD
+                    )
                 );
         }
 

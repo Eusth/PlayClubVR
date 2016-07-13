@@ -95,12 +95,12 @@ namespace PlayClubVR
                 var boneCollider = CreateCollider(controller.transform, -0.05f);
                 boneCollider.m_Center.y = -0.03f;
                 boneCollider.m_Center.z = 0.01f;
-                DynamicColliderRegistry.RegisterCollider(boneCollider, (b) => !IsHair(b));
+                DynamicColliderRegistry.RegisterCollider(boneCollider, (b) => !IsNotBust(b));
 
                 boneCollider = CreateCollider(controller.transform, 0.01f);
                 boneCollider.m_Center.y = -0.03f;
                 boneCollider.m_Center.z = 0.01f;
-                DynamicColliderRegistry.RegisterCollider(boneCollider, IsHair);
+                DynamicColliderRegistry.RegisterCollider(boneCollider, IsNotBust);
             }
         }
 
@@ -123,11 +123,11 @@ namespace PlayClubVR
             {
                 var boneCollider = CreateCollider(sphere, -0.05f).gameObject.AddComponent<DynamicBoneCollider>();
                 boneCollider.enabled = false;
-                DynamicColliderRegistry.RegisterCollider(boneCollider, (b) => !IsHair(b));
+                DynamicColliderRegistry.RegisterCollider(boneCollider, (b) => !IsNotBust(b));
 
                 boneCollider = CreateCollider(sphere, 0.01f).gameObject.AddComponent<DynamicBoneCollider>();
                 boneCollider.enabled = false;
-                DynamicColliderRegistry.RegisterCollider(boneCollider, IsHair);
+                DynamicColliderRegistry.RegisterCollider(boneCollider, IsNotBust);
 
 
             }
@@ -150,9 +150,9 @@ namespace PlayClubVR
             return hand;
         }
 
-        private bool IsHair(IDynamicBoneWrapper wrapper)
+        private bool IsNotBust(IDynamicBoneWrapper wrapper)
         {
-            return wrapper.Bone.name.Contains("hair") || wrapper.Bone.name.Contains("kami");
+            return !wrapper.Bone.name.Contains("Bust");
         }
 
         protected override void SyncCameras()

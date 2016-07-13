@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using VRGIN.Core;
+using VRGIN.Helpers;
 
 namespace PlayClubVR
 {
@@ -87,6 +88,14 @@ namespace PlayClubVR
             get;
         }
 
+        Transform Rim
+        {
+            get;
+        }
+
+        IEnumerable<Transform> Nodes { get; }
+
+
         List<DynamicBoneCollider> Colliders { get; }
     }
 
@@ -111,6 +120,22 @@ namespace PlayClubVR
             get
             {
                 return (Bone as DynamicBone).m_Root;
+            }
+        }
+
+        public Transform Rim
+        {
+            get
+            {
+                return (Bone as DynamicBone).m_Root.gameObject.Descendants().Last().transform;
+            }
+        }
+
+        public IEnumerable<Transform> Nodes
+        {
+            get
+            {
+                return Root.gameObject.Descendants().Select(d => d.transform).Concat(new Transform[] { Root });
             }
         }
 
@@ -141,6 +166,22 @@ namespace PlayClubVR
             get
             {
                 return (Bone as DynamicBone_Custom).m_Nodes[0];
+            }
+        }
+
+        public Transform Rim
+        {
+            get
+            {
+                return (Bone as DynamicBone_Custom).m_Nodes.Last();
+            }
+        }
+
+        public IEnumerable<Transform> Nodes
+        {
+            get
+            {
+                return(Bone as DynamicBone_Custom).m_Nodes;
             }
         }
 
