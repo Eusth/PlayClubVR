@@ -291,6 +291,7 @@ Tag      | Default | Effect | Mode
 `<SpeechRecognition>` | False | Sets whether or not speech recognition is enabled. | Seated / Standing
 `<Locale>` | en-US | Sets which locale is used for speech recognition. | Seated / Standing
 `<Leap>` | False | Sets whether or not Leap Motion support is activated. | Seated / Standing
+`<AutoLookAtMe>` | True | Sets whether or not the girls should look at you by default | Seated / Standing
 
 ## Building PlayClubVR
 
