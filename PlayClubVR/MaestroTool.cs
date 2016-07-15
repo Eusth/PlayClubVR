@@ -12,12 +12,26 @@ using VRGIN.Controls;
 using VRGIN.Helpers;
 using VRGIN.Native;
 using VRGIN.Controls.Tools;
+using IllusionInjector;
+using MaestroMode;
 
 namespace PlayClubVR
 {
     public class MaestroTool : Tool
     {
-        Transform _Handle = null;
+        // This is to avoid a dependency to MaestroMode (no instance variables allowed or the application will crash at the absence of the DLL)
+        object __Handle = null;
+        private IKHandle _Handle
+        {
+            get
+            {
+                return __Handle as IKHandle;
+            }
+            set
+            {
+                __Handle = value;
+            }
+        }
         Controller _Controller;
         Transform _Dummy = null;
         private bool _Dragging;
@@ -41,25 +55,15 @@ namespace PlayClubVR
         {
             get
             {
-                if (!_Available.HasValue)
-                {
-                    foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-                    {
-                        try {
-                            if(assembly.GetTypes().Any(type => type.FullName == "MaestroMode.MaestroPlugin"))
-                            {
-                                _Available = true;
-                                break;
-                            }
-                        } catch(Exception)
-                        {}
-                    }
-                    if(!_Available.HasValue)
-                    {
-                        _Available = false;
-                    }
-                }
-                return _Available.Value;
+                return PluginManager.Plugins.Any(plugin => plugin.GetType().FullName == "MaestroMode.MaestroPlugin");
+            }
+        }
+
+        public MaestroPlugin Maestro
+        {
+            get
+            {
+                return PluginManager.Plugins.OfType<MaestroPlugin>().FirstOrDefault();
             }
         }
 
@@ -70,34 +74,6 @@ namespace PlayClubVR
             _Controller = GetComponent<Controller>();
             _Dummy = new GameObject().transform;
             _Dummy.SetParent(transform, false);
-        }
-        
-        void OnTriggerEnter(Collider other)
-        {
-            if (IsMaestroHandle(other.gameObject)) {
-                _FocusCount++;
-
-                if (!_Dragging)
-                {
-                    _Handle = other.transform;
-                } else if(!_Focused && other.transform == _Handle)
-                {
-                    _Focused = true;
-                }
-            }
-        }
-
-        void OnTriggerExit(Collider other)
-        {
-            if (IsMaestroHandle(other.gameObject))
-            {
-                _FocusCount--;
-
-                if (_Dragging && _Focused && other.transform == _Handle)
-                {
-                    _Focused = false;
-                }
-            }
         }
 
         protected override void OnDisable()
@@ -125,13 +101,11 @@ namespace PlayClubVR
                     {
                         _Handle.gameObject.SendMessage("Select");
                         _Handle.gameObject.SendMessage("Activate", 1);
-                        var maestroHandle = GetMaestroHandle(_Handle.gameObject);
 
-                        var changedField = maestroHandle.GetType().BaseType.GetField("_changed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                        changedField.SetValue(maestroHandle, true);
+                        _Handle.MarkDirty();
 
-                        _Dummy.position = _Handle.position;
-                        _Dummy.rotation = _Handle.rotation;
+                        _Dummy.position = _Handle.transform.position;
+                        _Dummy.rotation = _Handle.transform.rotation;
                         _Dragging = true;
                     }
                 }
@@ -139,8 +113,8 @@ namespace PlayClubVR
                 {
                     if (device.GetPress(EVRButtonId.k_EButton_SteamVR_Trigger))
                     {
-                        _Handle.position = _Dummy.position;
-                        _Handle.rotation = _Dummy.rotation;
+                        _Handle.transform.position = _Dummy.position;
+                        _Handle.transform.rotation = _Dummy.rotation;
                     }
                     if (device.GetPressUp(EVRButtonId.k_EButton_SteamVR_Trigger))
                     {
@@ -156,7 +130,10 @@ namespace PlayClubVR
 
                 if(device.GetPressDown(EVRButtonId.k_EButton_Grip))
                 {
-                    SendKey.Send(Keys.F9, false);
+                    // Toggle
+                    var prevMode = Maestro.Mode;
+                    Maestro.Mode = MaestroPlugin.MaestroMode.FBBIK;
+                    Maestro.Visible = prevMode == Maestro.Mode ? !Maestro.Visible : true;
                 }
             }
         }
@@ -166,15 +143,12 @@ namespace PlayClubVR
             return base.GetHelpTexts();
         }
 
-        private Transform FindNextHandle()
+        private IKHandle FindNextHandle()
         {
-            // Evil method -- should be replaced with direct communication with Maestro Mode in a future release
-            Transform handle = GameObject.FindObjectsOfType<Transform>().Select(t => t.gameObject).Where(IsMaestroHandle)
-                               .Select(go => go.transform).OrderBy(t => Vector3.Distance(_Controller.transform.position, t.position)).FirstOrDefault();
+            var handle = Maestro.Handles.OrderBy(h => Vector3.Distance(_Controller.transform.position, h.transform.position)).FirstOrDefault();
             
-            if(handle && Vector3.Distance(_Controller.transform.position, handle.position) < 0.5f)
+            if(handle && Vector3.Distance(_Controller.transform.position, handle.transform.position) < 0.5f)
             {
-                VRLog.Info("FOUND HANDLE");
                 return handle;
             } else
             {
@@ -183,118 +157,8 @@ namespace PlayClubVR
 
         }
 
-        bool IsMaestroHandle(GameObject go)
-        {
-            return go.layer == LayerMask.NameToLayer("Chara") && go.GetComponents<MonoBehaviour>().Any(IsMaestroHandle);
-        }
-        
-        object GetMaestroHandle(GameObject go) {
-            return go.GetComponents<MonoBehaviour>().First(IsMaestroHandle);
-        }
-        bool IsMaestroHandle(MonoBehaviour type)
-        {
-            return type.GetType().Name.Contains("Handle");
-        }
-
         protected override void OnDestroy()
         {
-        }
-
-
-
-        /// <summary>
-        /// Enumeration for virtual keys.
-        /// </summary>
-        public enum Keys
-            : ushort
-        {
-            /// <summary></summary>
-            LeftButton = 0x01,
-            /// <summary></summary>
-            RightButton = 0x02,
-            /// <summary></summary>
-            F9 = 0x78
-        }
-        class SendKey
-        {
-
-            [StructLayout(LayoutKind.Sequential)]
-            private struct MOUSEINPUT
-            {
-                public int dx;
-                public int dy;
-                public int mouseData;
-                public int dwFlags;
-                public int time;
-                public int dwExtraInfo;
-            };
-
-            [StructLayout(LayoutKind.Sequential)]
-            private struct KEYBDINPUT
-            {
-                public short wVk;
-                public short wScan;
-                public int dwFlags;
-                public int time;
-                public int dwExtraInfo;
-            };
-
-            [StructLayout(LayoutKind.Sequential)]
-            private struct HARDWAREINPUT
-            {
-                public int uMsg;
-                public short wParamL;
-                public short wParamH;
-            };
-
-            [StructLayout(LayoutKind.Explicit)]
-            private struct INPUT
-            {
-                [FieldOffset(0)]
-                public int type;
-                [FieldOffset(4)]
-                public MOUSEINPUT no;
-                [FieldOffset(4)]
-                public KEYBDINPUT ki;
-                [FieldOffset(4)]
-                public HARDWAREINPUT hi;
-            };
-
-            [DllImport("user32.dll")]
-            private extern static void SendInput(int nInputs, ref INPUT pInputs, int cbsize);
-            [DllImport("user32.dll", EntryPoint = "MapVirtualKeyA")]
-            private extern static int MapVirtualKey(int wCode, int wMapType);
-
-            private const int INPUT_KEYBOARD = 1;
-            private const int KEYEVENTF_KEYDOWN = 0x0;
-            private const int KEYEVENTF_KEYUP = 0x2;
-            private const int KEYEVENTF_EXTENDEDKEY = 0x1;
-
-            public static void Send(Keys key, bool isEXTEND)
-            {
-                /*
-                 * Keyを送る
-                 * 入力
-                 *     isEXTEND : 拡張キーかどうか
-                 */
-
-                INPUT inp = new INPUT();
-
-                // 押す
-                inp.type = INPUT_KEYBOARD;
-                inp.ki.wVk = (short)key;
-                inp.ki.wScan = (short)MapVirtualKey(inp.ki.wVk, 0);
-                inp.ki.dwFlags = ((isEXTEND) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYDOWN;
-                inp.ki.time = 0;
-                inp.ki.dwExtraInfo = 0;
-                SendInput(1, ref inp, Marshal.SizeOf(inp));
-
-                System.Threading.Thread.Sleep(100);
-
-                // 離す
-                inp.ki.dwFlags = ((isEXTEND) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYUP;
-                SendInput(1, ref inp, Marshal.SizeOf(inp));
-            }
         }
     }
 }

@@ -28,6 +28,7 @@ namespace PlayClubVR
             base.OnStart();
 
             gameObject.AddComponent<OSPManager>();
+            gameObject.AddComponent<LookAtMeHandler>();
 
             LookForScene();
 

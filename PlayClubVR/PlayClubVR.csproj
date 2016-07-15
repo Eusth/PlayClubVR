@@ -44,6 +44,12 @@
       <HintPath>..\Libs\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CameraModifications">
+      <HintPath>..\Libs\CameraModifications.dll</HintPath>
+    </Reference>
+    <Reference Include="IllusionInjector">
+      <HintPath>..\Libs\Injector\IllusionInjector.dll</HintPath>
+    </Reference>
     <Reference Include="IllusionPlugin">
       <HintPath>..\Libs\Injector\IllusionPlugin.dll</HintPath>
       <Private>False</Private>
@@ -51,6 +57,9 @@
     <Reference Include="LeapCSharp.NET3.5, Version=3.1.3.0, Culture=neutral, PublicKeyToken=6e1b1368e71eba9b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\VRGIN\Libs\LeapCSharp.NET3.5.dll</HintPath>
+    </Reference>
+    <Reference Include="MaestroMode">
+      <HintPath>..\Libs\MaestroMode.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -78,6 +87,7 @@
     <Compile Include="Controller.cs" />
     <Compile Include="DynamicColliderRegistry.cs" />
     <Compile Include="ImpersonationHandler.cs" />
+    <Compile Include="LookAtMeHandler.cs" />
     <Compile Include="MaestroTool.cs" />
     <Compile Include="OSP\OSPAudioVolumeManager.cs" />
     <Compile Include="PlayClubActor.cs" />
