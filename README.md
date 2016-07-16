@@ -174,7 +174,7 @@ The *warp tool* is only available in room scale mode and allows you to jump arou
 
 #### Warping
 
-In order to warp, touch the trackpad, choose your position and press. While touching the trackpad you are able to see:
+In order to warp, touch the center of the trackpad, choose your position and press. While touching the trackpad you are able to see:
 
 1. Where you will warp to
 2. Your play area
@@ -199,7 +199,7 @@ By pressing the *grip button* you can reset the scale and height.
 #### Grabbing
 
 An alternative way to move your position is "grabbing." Just hold the grip button and move the controller around to 
-move in the opposite direction.
+move in the opposite direction. At any time, you can rotate your view by pressing the left or right side of your trackpad.
 
 This also works in conjunction with warping. To get back to ground level, press the grip button once to reset your play area and warp somewhere.
 
