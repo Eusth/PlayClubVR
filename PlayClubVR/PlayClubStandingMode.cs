@@ -121,11 +121,11 @@ namespace PlayClubVR
 
             foreach (var sphere in new Transform[] { hand.Thumb, hand.Index, hand.Middle, hand.Ring, hand.Pinky, hand.Palm })
             {
-                var boneCollider = CreateCollider(sphere, -0.05f).gameObject.AddComponent<DynamicBoneCollider>();
+                var boneCollider = CreateCollider(sphere, -0.05f);
                 boneCollider.enabled = false;
                 DynamicColliderRegistry.RegisterCollider(boneCollider, (b) => !IsNotBust(b));
 
-                boneCollider = CreateCollider(sphere, 0.01f).gameObject.AddComponent<DynamicBoneCollider>();
+                boneCollider = CreateCollider(sphere, 0.01f);
                 boneCollider.enabled = false;
                 DynamicColliderRegistry.RegisterCollider(boneCollider, IsNotBust);
 
