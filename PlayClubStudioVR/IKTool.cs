@@ -9,47 +9,49 @@ using VRGIN.Core;
 using VRGIN.Controls;
 using VRGIN.Helpers;
 using VRGIN.Controls.Tools;
+using UnityEngine.UI;
 
 namespace PlayClubStudioVR
 {
     static class IKCtrl
     {
-        private static bool _Ik = true;
-
-
-        internal static void Change(bool state)
+        public enum IKVisibility
         {
+            Deactivated,
+            Hidden,
+            Visible
+        }
+        public enum IKState
+        {
+            FK,
+            IK
+        }
+
+        public static IKState State { get { return _State; } private set { _State = value; } }
+        private static IKState _State = IKState.FK;
+        public static IKVisibility Visibility { get { return _Visibility; } private set { _Visibility = value; } }
+        private static IKVisibility _Visibility = IKVisibility.Deactivated;
+
+
+        public static event EventHandler StateChanged = delegate { };
+
+
+        internal static void Change(IKVisibility _visibility, IKState _state)
+        {
+            Visibility = _visibility;
+            State = _state;
+
             foreach (var actor in VR.Interpreter.Actors.OfType<StudioActor>())
             {
-                bool ikState = state && _Ik;
-                bool fkState = state && !_Ik;
-
-                //if (ikState)
-                //{
-                //    actor.Actor.ikCtrl.SetActive(ikState);
-                //}
-                //if(fkState) {
-                //    actor.Actor.fkCtrl.SetActive(fkState);
-                //}
-
-                //actor.Actor.ikCtrl.SetActiveTargets(ikState);
-                //actor.Actor.fkCtrl.SetActiveTargets(fkState);
+                bool ikState = Visibility == IKVisibility.Visible && State == IKState.IK;
+                bool fkState = Visibility == IKVisibility.Visible && State == IKState.FK;
                 
-                //if(ikState)
-                //{
-                //    actor.Actor.ikCtrl.SetupIK();
-                //}
-                //if(fkState)
-                //{
-                //    actor.Actor.fkCtrl.SetupFK();
-                //}
-
                 bool isActive = actor.Actor.fkCtrl.IsActive;
 
-                if (state)
+                if (Visibility == IKVisibility.Visible || Visibility == IKVisibility.Deactivated)
                 {
                     actor.Actor.ikCtrl.SetActive(ikState);
-                    actor.Actor.fkCtrl.SetActive(state);
+                    actor.Actor.fkCtrl.SetActive(ikState || fkState);
                 }
                 
                 actor.Actor.ikCtrl.SetActiveTargets(ikState);
@@ -67,28 +69,81 @@ namespace PlayClubStudioVR
                 {
                     actor.Actor.fkCtrl.SetupFK();
                 }
+            }
 
+            StateChanged(null, null);
+        }
+
+        internal static void Show()
+        {
+            if(Visibility == IKVisibility.Hidden)
+            {
+                Change(IKVisibility.Visible, State);
             }
         }
 
         internal static void Enable()
         {
-            Change(true);
+            if (Visibility == IKVisibility.Deactivated)
+            {
+                Change(IKVisibility.Visible, State);
+            }
         }
 
         internal static void Disable()
         {
-            Change(false);
+            if (Visibility > IKVisibility.Deactivated)
+            {
+                Change(IKVisibility.Deactivated, State);
+            }
+        }
+
+        internal static void Hide()
+        {
+            if (Visibility > IKVisibility.Hidden)
+            {
+                Change(IKVisibility.Hidden, State);
+            }
         }
 
         internal static void Toggle()
-        {
-            _Ik = !_Ik;
-            Change(true);
+        {  
+            var newState = (IKState)(((int)State + 1) % Enum.GetValues(typeof(IKState)).Length);
+            Change(Visibility, newState);
         }
     }
     class IKTool : Tool
     {
+        
+        private class IKStateReactor : ProtectedBehaviour
+        {
+            private Text textElement;
+            protected override void OnAwake()
+            {
+                base.OnAwake();
+                textElement = GetComponent<Text>();
+            }
+
+            void OnEnable()
+            {
+                IKCtrl.StateChanged += OnStateChanged;
+
+                OnStateChanged(null, null);
+            }
+            
+            void OnDisable()
+            {
+                IKCtrl.StateChanged -= OnStateChanged;
+            }
+            
+            private void OnStateChanged(object sender, EventArgs e)
+            {
+                textElement.text = IKCtrl.Visibility == IKCtrl.IKVisibility.Visible
+                    ? IKCtrl.State.ToString()
+                    : "-";
+            }
+        }
+
         private const float MAX_DISTANCE = 0.5f;
 
         private static string[] BLACKLIST = new string[] { "XY", "YZ", "XZ", "RingGuidZ", "RingGuidX", "RingGuidY" };
@@ -104,6 +159,7 @@ namespace PlayClubStudioVR
         private GuideDriveManager _Manager;
         private bool _Hover;
         private GameObject _HoverObject;
+        private Canvas _Canvas;
 
         public override Texture2D Image
         {
@@ -118,6 +174,7 @@ namespace PlayClubStudioVR
             return new List<HelpText>(new HelpText[] {
                 HelpText.Create("Switch FK/IK", FindAttachPosition("trackpad"), new Vector3(0.07f, 0.02f, 0.05f)),
                 HelpText.Create("Grab", FindAttachPosition("trigger"), new Vector3(0.06f, 0.04f, -0.05f)),
+                HelpText.Create("Grab", FindAttachPosition("trigger"), new Vector3(0.06f, 0.04f, -0.05f)),
             });
         }
 
@@ -125,6 +182,8 @@ namespace PlayClubStudioVR
         {
             base.OnStart();
             _Rumble = new TravelDistanceRumble(300, 0.05f, transform);
+
+            CreateIndicatorCanvas();
         }
 
         protected override void OnDisable()
@@ -134,15 +193,26 @@ namespace PlayClubStudioVR
 
             if(!(Owner.Other.ActiveTool is IKTool))
             {
-                IKCtrl.Disable();
+                IKCtrl.Hide();
+            }
+
+            if(_Canvas)
+            {
+                _Canvas.gameObject.SetActive(false);
             }
         }
 
         protected override void OnEnable()
         {
             base.OnEnable();
-            IKCtrl.Enable();
+            IKCtrl.Show();
+
+            if (_Canvas)
+            {
+                _Canvas.gameObject.SetActive(true);
+            }
         }
+
         protected override void OnFixedUpdate()
         {
             base.OnFixedUpdate();
@@ -183,6 +253,17 @@ namespace PlayClubStudioVR
                 {
                     IKCtrl.Toggle();
                 }
+                if (device.GetPressDown(EVRButtonId.k_EButton_Grip))
+                {
+                    if (IKCtrl.Visibility == IKCtrl.IKVisibility.Deactivated)
+                    {
+                        IKCtrl.Enable();
+                    }
+                    else
+                    {
+                        IKCtrl.Disable();
+                    }
+                }
             }
         }
 
@@ -199,51 +280,6 @@ namespace PlayClubStudioVR
             return null;
         }
 
-        //public void OnTriggerEnter(Collider other)
-        //{
-        //    try
-        //    {
-
-        //        if (other.gameObject.layer == GIZMO_LAYER && !BLACKLIST.Contains(other.name))
-        //        {
-        //            VRLog.Debug("Enter {0}", other.name);
-        //            if (!_Dragging)
-        //            {
-        //                if (_Rumble != null)
-        //                {
-        //                    _Rumble.Close();
-        //                }
-        //                _Rumble = new RumbleSession(500, 100);
-        //                Owner.StartRumble(_Rumble);
-        //                _Manager = (_GuideDriveManager.GetValue(other.GetComponent<GuideDrive>()) as GuideDriveManager);
-        //                _HoverObject = other.gameObject;
-        //                _Hover = true;
-        //            }
-        //        }
-        //        if (other.gameObject == _HoverObject)
-        //        {
-        //            _Hover = true;
-        //        }
-        //    } catch(Exception e)
-        //    {
-        //        Logger.Error(e);
-        //    }
-        //}
-
-        //public void OnTriggerExit(Collider other)
-        //{
-        //    try
-        //    {
-        //        if(other.gameObject.layer == GIZMO_LAYER && !_Dragging)
-        //        {
-        //            _HoverObject = other.gameObject;
-        //        }
-        //    } catch(Exception e)
-        //    {
-        //        Logger.Error(e);
-
-        //    }
-        //}
         private void Release()
         {
             _HoverObject = null;
@@ -251,6 +287,35 @@ namespace PlayClubStudioVR
 
         protected override void OnDestroy()
         {
+        }
+
+        private void CreateIndicatorCanvas()
+        {
+            var canvas = _Canvas = UnityHelper.CreateGameObjectAsChild("IKFK", FindAttachPosition("trackpad")).gameObject.AddComponent<Canvas>();
+
+
+            canvas.renderMode = RenderMode.WorldSpace;
+
+            canvas.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 100);
+            canvas.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 100);
+
+            canvas.transform.localPosition = new Vector3(0, 0, 0.00327f);
+            canvas.transform.localRotation = Quaternion.Euler(0, 180, 90);
+            canvas.transform.localScale = new Vector3(0.0002294636f, 0.0002294636f, 0.0002294636f);
+
+
+            var text = UnityHelper.CreateGameObjectAsChild("Text", canvas.transform).gameObject.AddComponent<Text>();
+            var outline = text.gameObject.AddComponent<Outline>();
+            text.gameObject.AddComponent<IKStateReactor>();
+
+            // Maximize
+            text.GetComponent<RectTransform>().anchorMin = Vector2.zero;
+            text.GetComponent<RectTransform>().anchorMax = Vector2.one;
+            text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            text.alignment = TextAnchor.MiddleCenter;
+            text.color = Color.white;
+            text.fontSize = 50;
+            text.resizeTextForBestFit = false;
         }
     }
 }

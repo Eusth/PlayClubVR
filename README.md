@@ -231,7 +231,9 @@ The *conductor tool* lets you pose the guys and gals. The tool works differently
 
 #### Studio
 
-The tool is basically a wrapper around the built-in FK/IK functionality. The IK/FK handles are automatically activated when you have this tool in either hand, and deactivated when you don't have this tool in either hand. Press the trackpad to switch between IK and FK modes.
+The tool is basically a wrapper around the built-in FK/IK functionality. When you switch to this tool, it will be deactivated at first (indicated by a "-" sign). In this state, you can only move the characters as a whole.
+
+In order to show the handles and move the limbs, activate the tool via the grip button. Press the trackpad to switch between IK and FK modes.
 
 To interact with the handles, simply grab them using the trigger button. **You do not need to hover over them exactly!** The tool will automatically detect the nearest handle and take control of it!
 
