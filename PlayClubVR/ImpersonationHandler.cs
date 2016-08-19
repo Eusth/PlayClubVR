@@ -190,7 +190,7 @@ namespace PlayClubVR
             if (root == null) root = member.transform.FindChild("cf_body_01");
             if (root == null)
             {
-                Console.WriteLine("No entry point found: {0}", member.name);
+                VRLog.Info("No entry point found: {0}", member.name);
             }
 
             ik.references = new BipedReferences();

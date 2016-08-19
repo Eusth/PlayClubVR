@@ -251,7 +251,14 @@ namespace PlayClubStudioVR
                 }
                 if(device.GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad))
                 {
-                    IKCtrl.Toggle();
+                    if (IKCtrl.Visibility == IKCtrl.IKVisibility.Deactivated)
+                    {
+                        IKCtrl.Enable();
+                    }
+                    else
+                    {
+                        IKCtrl.Toggle();
+                    }
                 }
                 if (device.GetPressDown(EVRButtonId.k_EButton_Grip))
                 {
