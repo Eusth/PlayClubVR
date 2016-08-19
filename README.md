@@ -295,15 +295,50 @@ Tag      | Default | Effect | Mode
 `<Leap>` | False | Sets whether or not Leap Motion support is activated. | Seated / Standing
 `<AutoLookAtMe>` | True | Sets whether or not the girls should look at you by default | Seated / Standing
 
+## Debugging
+
+The mod writes all its log output to a file called `vr.log`. In order to display the log at runtime, you can either start PlayClubVR.exe (which, incidentally, is really just [this](https://github.com/Eusth/Illusion-Plugins/tree/master/QuietLauncher)) with the "--verbose" argument or drop [the debug plugin](https://github.com/Eusth/Illusion-Plugins/releases/download/v1.4-Plugin_Architecture/DebugPlugin.zip) into your plugins folder. 
+
 ## Building PlayClubVR
 
-PlayClubVR depends on the [VRGIN.Core](https://github.com/Eusth/VRGIN.Core) library which is included as a submodule. It is therefore important that when you clone the project, you clone it recursively.
+PlayClubVR depends on the [VRGIN](https://github.com/Eusth/VRGIN) library which is included as a submodule. It is therefore important that when you clone the project, you clone it recursively.
 
 ```
 git clone --recursive https://github.com/Eusth/PlayClubVR.git
 cd PlayClubVR
 ```
 
-After cloning the repo and setting up the submodule, you should be able to compile the project by simply opening the *.sln file and building.
+After cloning the repo and setting up the submodule, you should be able to compile the project by simply opening the *.sln file with Visual Studio and building.
 
-Note that there is a build configuration called "Install" that will extract your Play Club install directory from the registry and copy the files where they belong. 
+Note that there is a build configuration called "Install" that will extract your Play Club install directory from the registry and copy the files where they belong.
+
+## Working with the Code
+
+Once you have set up your workspace, you can start coding away. The PlayClubVR project only contains the PlayClub-specific code, like the play tool and the boilerplate code. The actual framework code can be found in the VRGIN project.
+
+### Initialization
+
+Your first point of interest will be `PlayClubVR.cs`, which sets the stage for VR.
+
+```csharp
+var manager = VRManager.Create<PlayClubInterpreter>(new PlayClubContext());
+manager.SetMode<PlayClubSeatedMode>();
+```
+
+This snippet shows the four central components utilized in the mod.
+
+Class    | Lifetime | Purpose
+----     | ------  | ------
+`VRManager` | Application | Holds everything together and takes care of the camera generation and mode switching.
+`PlayClubInterpeter` | Application | Implements a few game specific methods that are needed by the VRGIN library. For example, finds the actors.
+`PlayClubContext` | Application | Simple data holder with a number of configurations, like materials, layers, colors, etc.
+`PlayClubSeatedMode` | Mode | The initial mode to start in. Modes contain the actual VR game logic.
+
+### Random infos
+
+- Controls can be found in the `VRGIN.Controls` namespace.
+- The camera code is located in `VRGIN.Core.VRCamera`.
+- The GUI code is located in `VRGIN.Core.VRGUI` and is rendered by `VRGIN.Visuals.GUIQuad` and `VRGIN.Visuals.GUIMonitor` (curved).
+- `VRGIN.Helpers.UnityHelper` has a few useful methods for debugging purposes. Also, use the  <kbd>Ctrl</kbd>+<kbd>C</kbd>, <kbd>Ctrl</kbd>+<kbd>D</kbd> shortcut to dump the entire scene to `dump.json`.
+- If you want to implement your own tool, create a new `Tool` subclass and add it to `PlayClubStandingMode#Tools`.
+- If you want to implement a new shortcut, add it to the `CreateShortcuts()` method in the mode where you want it.
